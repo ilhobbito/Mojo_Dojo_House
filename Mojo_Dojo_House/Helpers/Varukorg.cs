@@ -59,6 +59,8 @@ namespace Mojo_Dojo_House.Helpers
                 case 'l':
                     Draw.DrawLogIn();
                     break;
+                case 'm':
+                    break;
 
 
             }
@@ -67,6 +69,7 @@ namespace Mojo_Dojo_House.Helpers
         {
             string cards = card;
             Draw.DrawCard(cards);
+            Console.ReadLine();
         }
     }
 }

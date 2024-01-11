@@ -11,7 +11,7 @@ namespace Mojo_Dojo_House.Classes
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=ToyStoreTesting;Trusted_Connection = True; TrustServerCertificate = True; ");
+            optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=Mojo_Dojo_House;Trusted_Connection = True; TrustServerCertificate = True; ");
 
         }
         public DbSet<Address> Address { get; set; }
@@ -23,5 +23,6 @@ namespace Mojo_Dojo_House.Classes
         public DbSet<Product> Product { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set;}
     }
 }

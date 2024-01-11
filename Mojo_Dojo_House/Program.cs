@@ -1,4 +1,5 @@
 ﻿using Mojo_Dojo_House.Helpers;
+using Mojo_Dojo_House.DataInput;
 
 namespace Mojo_Dojo_House
 {
@@ -12,13 +13,14 @@ namespace Mojo_Dojo_House
             //inputData.DataInfo3();
             //inputData.DataInfo4();
             //inputData.DataInfo5();
-            Draw.DrawStartMenu();
             while (true)
 
             {
+
                 Console.Clear();
                 Draw.DrawStartMenu();
                 var key = Console.ReadKey();
+
                 Console.Clear();
                 switch (key.KeyChar)
                 {
@@ -60,7 +62,7 @@ namespace Mojo_Dojo_House
                         Draw.DrawLogIn();
                         Login.LoginAttempt();
                         break;
-                    case 's':
+                    case 'm':
                         break;
                 }
             }

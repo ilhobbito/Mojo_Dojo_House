@@ -56,23 +56,40 @@ namespace Mojo_Dojo_House.Helpers
             }
             return products;
         }
-        public static void AdminPage()
+        public static void AdminSite()
         {
             var key = Console.ReadKey();
             Console.Clear();
             switch (key.KeyChar)
             {
-                //varukorg
                 case '1':
-                    //Draw.ProductPage();
+                    Draw.ProductPage();
                     break;
                 case '2':
-                    //Draw.CategoryPage();
+                    Draw.CategoryPage();
                     break;
                 case '3':
-                    //Draw.Userpage();
+                    Draw.UserPage();
+                    break;
+                case 'L':
+                    LoginSettnings.Logout();
+                    Draw.DrawLogIn();
                     break;
             }
+        }
+        public static void ProductSite()
+        {
+            //ta bort, göra nya eller ändra
+            //productnamn, infotext, pris, productkategori, leverantör eller lagersaldo
+        }
+        public static void CategorySite()
+        {
+            //kunna lägga till/ta bort kategorier eller ändra namn eller description
+        }
+        public static void UserSite()
+        {
+            // kinnda lägga till, ta bort eller ändra kunder upggifter
+            //kunna se beställning historik
         }
     }
     public static class LoginSettnings

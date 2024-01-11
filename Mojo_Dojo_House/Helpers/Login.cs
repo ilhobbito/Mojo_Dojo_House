@@ -20,6 +20,7 @@ namespace Mojo_Dojo_House.Helpers
                 string password = Console.ReadLine();
                 if (username == "admin" && password == "admin")
                 {
+                    LoginSettnings.Login(username);
                     Draw.AdminPage();
                 }
                 else

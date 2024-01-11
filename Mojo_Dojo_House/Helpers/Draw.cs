@@ -103,6 +103,7 @@ namespace Mojo_Dojo_House.Helpers
         }
         public static void AdminPage()
         {
+            Console.Clear();
             //kunna ändra producter
             //kolla betällningshistorik
             //ändra uppgifter på kunder
@@ -114,9 +115,38 @@ namespace Mojo_Dojo_House.Helpers
 
             WelcomeSign();
             LoginSettnings.LoginBox();
+            Helper.AdminSite();
 
-
+            
         }
+        public static void ProductPage()
+        {
+            List<string> topText2 = new List<string> { "1:Producter  2:Kategorier  3:Kunder" };
+            var windowTop2 = new Classes.Window("", 20, 1, topText2);
+            windowTop2.Draw();
+            WelcomeSign();
+            LoginSettnings.LoginBox();
+            Helper.ProductSite();
+        }
+        public static void CategoryPage()
+        {
+            List<string> topText2 = new List<string> { "1:Producter  2:Kategorier  3:Kunder" };
+            var windowTop2 = new Classes.Window("", 20, 1, topText2);
+
+            WelcomeSign();
+            LoginSettnings.LoginBox();
+            Helper.CategorySite();
+        }
+        public static void UserPage()
+        {
+            List<string> topText2 = new List<string> { "1:Producter  2:Kategorier  3:Kunder" };
+            var windowTop2 = new Classes.Window("", 20, 1, topText2);
+            windowTop2.Draw();
+            WelcomeSign();
+            LoginSettnings.LoginBox();
+            Helper.UserSite();
+        }
+
         public static void WelcomeSign()
         {
             List<string> topText = new List<string> { "# Mojo Dojo #", "Här har vi kul" };
