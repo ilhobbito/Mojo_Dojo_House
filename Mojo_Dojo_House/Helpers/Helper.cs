@@ -67,9 +67,10 @@ namespace Mojo_Dojo_House.Helpers
                     //Draw.ProductPage();
                     break;
                 case '2':
+                    //Draw.CategoryPage();
                     break;
                 case '3':
-
+                    //Draw.Userpage();
                     break;
             }
         }
