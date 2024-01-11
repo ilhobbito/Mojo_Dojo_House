@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Mojo_Dojo_House.Classes
 {
-    internal class Order
+    public class Order
     {
         public int Id { get; set; }
-        public int?  UserId { get; set; }
-        public int? ProductId { get; set; }
-        public int? Quantity { get; set; }
-        public int? Price { get; set; }
-        public DateTime? CurrentDate { get; set; } = DateTime.Now;
+        public int? UserId { get; set; }
+        public double TotalPrice { get; set; }
+        public DateTime? CurrentDate { get; set; }
+
+        public virtual User User { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
