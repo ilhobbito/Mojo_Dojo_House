@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Mojo_Dojo_House.Classes;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Mojo_Dojo_House.DataInput;
 
 namespace Mojo_Dojo_House.Helpers
 {
@@ -21,6 +22,7 @@ namespace Mojo_Dojo_House.Helpers
                 if (product != null)
                 {
                     totalPrice += product.Price * quantities[i];
+
                     orderDetails.Add(new OrderDetail { ProductId = productIds[i], Quantity = quantities[i] });
                 }
             }
@@ -34,29 +36,61 @@ namespace Mojo_Dojo_House.Helpers
             myDb.SaveChanges();
         }
 
-        public static List<string> GetProducts(string ConnectDatabase, int categoryId)
+        public static List<string> GetProducts(int categoryID)
         {
-            var products = new List<string>();
-            var CategoryId = categoryId;
-            using (SqlConnection connection = new SqlConnection(ConnectDatabase))
+            var Product = new List<string>();
+            using (var db = new MyDbContext())
             {
-                connection.Open();
-                var query = $"SELECT Name FROM Product WHERE CategoryId = {CategoryId}";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                var products = db.Product.Where(c => c.CategoryId == categoryID).ToList();
+                foreach (var product in products)
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            products.Add(reader["Name"].ToString());
-                        }
-                    }
+                    Product.Add(product.Name);
                 }
+                return Product;
             }
-            return products;
         }
 
+
+
+        public static void Search()
+        {
+            Console.WriteLine("Sök: ");
+            string searchTerm = Console.ReadLine();
+
+            using (var db = new MyDbContext())
+            {
+                var search = db.Product
+                                 .Where(c => c.Name.Contains(searchTerm) || c.Description.Contains(searchTerm))
+                                 .ToList();
+
+                foreach (var toy in search)
+                {
+                    Console.WriteLine(toy.Name);
+                }
+            }
+        }
+        public static List<string> GetRecommended()
+        {
+            
+            using (var db = new MyDbContext())
+            {
+                var Recommend = new List<string>();
+                var recommended = from r in db.Product
+                                  where r.Recommended == true
+                                  orderby r.Name
+                                  select r;
+                recommended.ToList();
+
+
+                foreach (var r in recommended)
+                {
+                    Recommend.Add(r.Name);
+                    
+                }
+                return Recommend;
+            }
+
+        }
         public static List<string> GetProductsAdmin()
         {
             var products = new List<string>();
@@ -64,34 +98,41 @@ namespace Mojo_Dojo_House.Helpers
             {
                 foreach(var name in db.Product)
                 {
-                    products.Add(name.Name);
+                    string product = name.Id + ". " + name.Name;
+                    products.Add(product);
                 }
             }
            return products;
         }
 
 
-        public static List<string> GetCategoriesAdmin(string ConnectDatabase)
+        public static List<string> GetCategoriesAdmin()
         {
-            var categories = new List<string>();
-
-            using (var connection = new SqlConnection(ConnectDatabase))
+            var Categories = new List<string>();
+            using (var db = new MyDbContext())
             {
-                connection.Open();
-                var query = "Select Name FROM Category";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                foreach (var name in db.Category)
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            categories.Add(reader["Name"].ToString());
-                        }
-                    }
+                    string category = name.Id + ". " + name.Name;
+                    Categories.Add(category);
                 }
             }
-            return categories;
+            return Categories;
+        }
+
+        public static List<string> GetUserAdmin()
+        {
+            var Users = new List<string>();
+            using (var db = new MyDbContext())
+            {
+                foreach (var user in db.Users)
+                {
+                    string User = user.Id + ". " + user.Username;
+                    Users.Add(User);
+                    
+                }
+            }
+            return Users;
         }
     }
 }

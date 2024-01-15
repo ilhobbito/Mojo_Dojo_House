@@ -56,6 +56,17 @@ namespace Mojo_Dojo_House.Helpers
                     string card3 = "K: Klarna";
                     Paying(card3);
                     break;
+
+                case 'o':
+                    string shipping1 = "O: Ombud";
+                    Draw.DrawShipping(shipping1);
+                    Shipping(shipping1);
+                    break;
+                case 'p':
+                    string shipping2 = "P: Postnord";
+                    Draw.DrawShipping(shipping2);
+                    Shipping(shipping2);
+                    break;
                 case 'l':
                     Draw.DrawLogIn();
                     break;
@@ -65,7 +76,14 @@ namespace Mojo_Dojo_House.Helpers
 
             }
         }
-        public static void Paying(string card)
+        public static void Shipping(string shipping)
+        {
+            string shippings = shipping;
+            Draw.DrawShipping(shipping);
+            Console.ReadLine();
+        }
+
+            public static void Paying(string card)
         {
             string cards = card;
             Draw.DrawCard(cards);

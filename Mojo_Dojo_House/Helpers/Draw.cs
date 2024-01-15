@@ -10,6 +10,7 @@ namespace Mojo_Dojo_House.Helpers
 {
     public class Draw
     {
+
         public static void DrawStartMenu()
         {
             //lägg databas istället
@@ -22,7 +23,7 @@ namespace Mojo_Dojo_House.Helpers
             windowCart.Draw();
 
             //använda databas för recommended
-            List<string> recommended = new List<string> { "Legoset", "NerfGun", "Stordrönare" };
+            var recommended = Helper.GetRecommended();
             var recommendedText = new Classes.Window("Recommended Products", 2, 7, recommended);
             recommendedText.Draw();
 
@@ -41,8 +42,12 @@ namespace Mojo_Dojo_House.Helpers
             var windowCart = new Classes.Window("Din varukorg", 2, 6, cartText);
             windowCart.Draw();
 
+            List<string> frakt = new List<string> { "Välj fraktsätt med: Ombud eller Postnord, tryck O för Ombud, P för Postnord " };
+            var shippingInfo = new Classes.Window("Ombud: ", 25, 6, frakt);
+            shippingInfo.Draw();
+
             List<string> Betala = new List<string> { "Vad vill du betala med", "Bankkort", "Swish", "Klarna" };
-            var BetalaWindow = new Classes.Window("betala", 30, 6, Betala);
+            var BetalaWindow = new Classes.Window("betala", 30, 9, Betala);
             BetalaWindow.Draw();
 
             WelcomeSign();
@@ -80,18 +85,21 @@ namespace Mojo_Dojo_House.Helpers
 
             LoginSettnings.LoginBox();
         }
+        public static void DrawShipping(string shipping)
+        {
 
+            string shippings = shipping;
+            List<string> shippingsInfo = new List<string> { shippings };
+            var shippingInfo = new Classes.Window("Välj fraktsätt med: ", 2, 6, shippingsInfo);
+            shippingInfo.Draw();
+        }
         public static void DrawCategories(string categories, int categoriesId)
         {
             string category = categories;
             var categoryId = categoriesId;
 
-            //List<string> cardsText = new List<string> { category };
-            //var cardText = new Classes.Window("Du är i Kategorin", 2, 6, cardsText);
-            //cardText.Draw();
-
-            var ConnectDatabase = "Server=.\\SQLExpress;Database=ToyStoreTesting;Trusted_Connection = True; TrustServerCertificate = True; ";
-            var products = Helper.GetProducts(ConnectDatabase, categoryId);
+           
+            var products = Helper.GetProducts(categoryId);
             var productWindow = new Classes.Window($"kategori: {category}", 20, 5, products);
             productWindow.Draw();
 
@@ -104,10 +112,6 @@ namespace Mojo_Dojo_House.Helpers
         public static void AdminPage()
         {
             Console.Clear();
-            //kunna ändra producter
-            //kolla betällningshistorik
-            //ändra uppgifter på kunder
-            //ändra kategorier
 
             List<string> topText2 = new List<string> { "1:Producter  2:Kategorier  3:Kunder" };
             var windowTop2 = new Classes.Window("", 20, 1, topText2);
@@ -121,30 +125,45 @@ namespace Mojo_Dojo_House.Helpers
         }
         public static void ProductPage()
         {
-            List<string> topText2 = new List<string> { "1:Producter  2:Kategorier  3:Kunder" };
-            var windowTop2 = new Classes.Window("", 20, 1, topText2);
-            windowTop2.Draw();
+            AdminBanner();
             WelcomeSign();
-            LoginSettnings.LoginBox();
-            Admin.ProductSite();
         }
         public static void CategoryPage()
         {
-            List<string> topText2 = new List<string> { "1:Producter  2:Kategorier  3:Kunder" };
-            var windowTop2 = new Classes.Window("", 20, 1, topText2);
-
+            AdminBanner();
             WelcomeSign();
-            LoginSettnings.LoginBox();
-            Admin.CategorySite();
         }
         public static void UserPage()
+        {
+            AdminBanner();
+            WelcomeSign();
+        }
+
+        public static void AdminBanner()
         {
             List<string> topText2 = new List<string> { "1:Producter  2:Kategorier  3:Kunder" };
             var windowTop2 = new Classes.Window("", 20, 1, topText2);
             windowTop2.Draw();
+
             WelcomeSign();
+
             LoginSettnings.LoginBox();
-            Admin.UserSite();
+        }
+
+        public static void DrawDeleteProductPage()
+        {
+            WelcomeSign();
+
+
+        }
+
+        public static void DrawChangeProductPage()
+        {
+            WelcomeSign();
+        }
+        public static void DrawAddProductPage()
+        {
+            WelcomeSign();
         }
 
         public static void WelcomeSign()

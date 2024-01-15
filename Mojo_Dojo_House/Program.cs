@@ -1,5 +1,6 @@
 ﻿using Mojo_Dojo_House.Helpers;
 using Mojo_Dojo_House.DataInput;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Mojo_Dojo_House
 {
@@ -62,6 +63,9 @@ namespace Mojo_Dojo_House
                         break;
                     case 'm':
                         Draw.DrawStartMenu();
+                        break;
+                    case 's':
+                        Helper.Search();
                         break;
                 }
             }

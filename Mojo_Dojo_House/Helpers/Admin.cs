@@ -12,42 +12,92 @@ namespace Mojo_Dojo_House.Helpers
     {
         public static void AdminSite()
         {
-            var key = Console.ReadKey();
-            Console.Clear();
-            switch (key.KeyChar)
+            bool admin = true;
+            while (admin)
             {
-                case '1':
-                    Draw.ProductPage();
-                    break;
-                case '2':
-                    Draw.CategoryPage();
-                    break;
-                case '3':
-                    Draw.UserPage();
-                    break;
-                case 'L':
-                    LoginSettnings.Logout();
-                    Draw.DrawLogIn();
-                    break;
+                int LocationInfo;
+                var key = Console.ReadKey();
+                Console.Clear();
+                switch (key.KeyChar)
+                {
+                    case '1':
+                        LocationInfo = 1;
+                        Draw.ProductPage();
+                        ProductSite(LocationInfo);
+                        break;
+                    case '2':
+                        LocationInfo = 2;
+                        Draw.CategoryPage();
+                        ProductSite(LocationInfo);
+                        break;
+                    case '3':
+                        LocationInfo = 3;
+                        Draw.UserPage();
+                        ProductSite(LocationInfo);
+                        break;
+                    case 'L':
+                        LoginSettnings.Logout();
+                        admin = false;
+                        Draw.DrawLogIn();
+                        break;
+                }
             }
         }
-        public static void ProductSite()
+        public static void ProductSite(int Location)
         {
             //ta bort, göra nya eller ändra
             //productnamn, infotext, pris, productkategori, leverantör eller lagersaldo
             var products = Helper.GetProductsAdmin();
             var productWindow = new Classes.Window($"", 20, 5, products);
             productWindow.Draw();
-            Console.ReadLine();
+
+            Console.WriteLine("Vad vill du göra?");
+            Console.WriteLine("T. Ta bort en vara");
+            Console.WriteLine("A. Ändra en vara");
+            Console.WriteLine("L. lägg till en vara");
+            var key = Console.ReadKey();
+            Console.Clear();
+            //switch (key.KeyChar)
+            //{
+            //    case '1':
+            //        Draw.ProductPage();
+            //        ProductSite();
+            //        break;
+            //    case '2':
+            //        Draw.CategoryPage();
+            //        ProductSite();
+            //        break;
+            //    case '3':
+            //        Draw.UserPage();
+            //        ProductSite();
+            //        break;
+            //    case 't':
+            //        Draw.DrawDeleteProductPage();
+            //        DeleteProductSite();
+            //        break;
+            //    case 'a':
+            //        Draw.DrawChangeProductPage();
+            //        ChangeProductSite();
+            //        break;
+            //    case 'l':
+            //        Draw.DrawAddProductPage();
+            //        AddProductSite();
+            //        break;
+            //}
         }
-        public static void CategorySite()
+        public static void DeleteProductSite()
         {
-            //kunna lägga till/ta bort kategorier eller ändra namn eller description
+
         }
-        public static void UserSite()
+        public static void ChangeProductSite()
         {
-            // kinnda lägga till, ta bort eller ändra kunder upggifter
-            //kunna se beställning historik
+
         }
+        public static void AddProductSite()
+        {
+
+        }
+        
+        
     }
 }
