@@ -12,8 +12,8 @@ using Mojo_Dojo_House.Classes;
 namespace Mojo_Dojo_House.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240111124752_first")]
-    partial class first
+    [Migration("20240112083641_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

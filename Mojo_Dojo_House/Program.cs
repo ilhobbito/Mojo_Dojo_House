@@ -13,12 +13,10 @@ namespace Mojo_Dojo_House
             //inputData.DataInfo3();
             //inputData.DataInfo4();
             //inputData.DataInfo5();
+            Draw.DrawStartMenu();
             while (true)
-
+            
             {
-
-                Console.Clear();
-                Draw.DrawStartMenu();
                 var key = Console.ReadKey();
 
                 Console.Clear();
@@ -63,6 +61,7 @@ namespace Mojo_Dojo_House
                         Login.LoginAttempt();
                         break;
                     case 'm':
+                        Draw.DrawStartMenu();
                         break;
                 }
             }

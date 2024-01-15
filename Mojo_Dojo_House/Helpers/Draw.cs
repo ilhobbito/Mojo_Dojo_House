@@ -115,7 +115,7 @@ namespace Mojo_Dojo_House.Helpers
 
             WelcomeSign();
             LoginSettnings.LoginBox();
-            Helper.AdminSite();
+            Admin.AdminSite();
 
             
         }
@@ -126,7 +126,7 @@ namespace Mojo_Dojo_House.Helpers
             windowTop2.Draw();
             WelcomeSign();
             LoginSettnings.LoginBox();
-            Helper.ProductSite();
+            Admin.ProductSite();
         }
         public static void CategoryPage()
         {
@@ -135,7 +135,7 @@ namespace Mojo_Dojo_House.Helpers
 
             WelcomeSign();
             LoginSettnings.LoginBox();
-            Helper.CategorySite();
+            Admin.CategorySite();
         }
         public static void UserPage()
         {
@@ -144,7 +144,7 @@ namespace Mojo_Dojo_House.Helpers
             windowTop2.Draw();
             WelcomeSign();
             LoginSettnings.LoginBox();
-            Helper.UserSite();
+            Admin.UserSite();
         }
 
         public static void WelcomeSign()

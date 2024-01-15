@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Mojo_Dojo_House.Classes;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Mojo_Dojo_House.Helpers
 {
@@ -32,19 +33,18 @@ namespace Mojo_Dojo_House.Helpers
             myDb.Add(order);
             myDb.SaveChanges();
         }
+
         public static List<string> GetProducts(string ConnectDatabase, int categoryId)
         {
             var products = new List<string>();
-
+            var CategoryId = categoryId;
             using (SqlConnection connection = new SqlConnection(ConnectDatabase))
             {
                 connection.Open();
-                var query = "SELECT Name FROM Product WHERE CategoryId = @CategoryId";
+                var query = $"SELECT Name FROM Product WHERE CategoryId = {CategoryId}";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@CategoryId", categoryId);
-
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -56,78 +56,42 @@ namespace Mojo_Dojo_House.Helpers
             }
             return products;
         }
-        public static void AdminSite()
+
+        public static List<string> GetProductsAdmin()
         {
-            var key = Console.ReadKey();
-            Console.Clear();
-            switch (key.KeyChar)
+            var products = new List<string>();
+            using (var db = new MyDbContext())
             {
-                case '1':
-                    Draw.ProductPage();
-                    break;
-                case '2':
-                    Draw.CategoryPage();
-                    break;
-                case '3':
-                    Draw.UserPage();
-                    break;
-                case 'L':
-                    LoginSettnings.Logout();
-                    Draw.DrawLogIn();
-                    break;
+                foreach(var name in db.Product)
+                {
+                    products.Add(name.Name);
+                }
             }
-        }
-        public static void ProductSite()
-        {
-            //ta bort, göra nya eller ändra
-            //productnamn, infotext, pris, productkategori, leverantör eller lagersaldo
-        }
-        public static void CategorySite()
-        {
-            //kunna lägga till/ta bort kategorier eller ändra namn eller description
-        }
-        public static void UserSite()
-        {
-            // kinnda lägga till, ta bort eller ändra kunder upggifter
-            //kunna se beställning historik
-        }
-    }
-    public static class LoginSettnings
-    {
-        public static bool IsUserLoggedIn { get; private set; } = false;
-        public static string Username { get; private set; }
-
-        public static void Login(string name)
-        {
-            Username = name;
-            IsUserLoggedIn = true;
+           return products;
         }
 
-        public static void Logout()
-        {
-            Username = null;
-            IsUserLoggedIn = false;
-        }
 
-        public static void LoginBox()
+        public static List<string> GetCategoriesAdmin(string ConnectDatabase)
         {
-            bool isLoggedIn = LoginSettnings.IsUserLoggedIn;
+            var categories = new List<string>();
 
-            if (isLoggedIn == true)
+            using (var connection = new SqlConnection(ConnectDatabase))
             {
-                //fixa så när man loggar in så står det att man är inloggad
-                List<string> LogIn = new List<string> { LoginSettnings.Username };
-                var windowLogIn = new Classes.Window("", 2, 4, LogIn);
-                windowLogIn.Left = 70;
-                windowLogIn.Draw();
+                connection.Open();
+                var query = "Select Name FROM Category";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            categories.Add(reader["Name"].ToString());
+                        }
+                    }
+                }
             }
-            else
-            {
-                List<string> LogIn = new List<string> { "L: Login" };
-                var windowLogIn = new Classes.Window("", 2, 4, LogIn);
-                windowLogIn.Left = 70;
-                windowLogIn.Draw();
-            }
+            return categories;
         }
     }
 }

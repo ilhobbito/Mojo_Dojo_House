@@ -35,5 +35,44 @@ namespace Mojo_Dojo_House.Helpers
             }
 
         }
+
+    }
+    public static class LoginSettnings
+    {
+        public static bool IsUserLoggedIn { get; private set; } = false;
+        public static string Username { get; private set; }
+
+        public static void Login(string name)
+        {
+            Username = name;
+            IsUserLoggedIn = true;
+        }
+
+        public static void Logout()
+        {
+            Username = null;
+            IsUserLoggedIn = false;
+        }
+
+        public static void LoginBox()
+        {
+            bool isLoggedIn = LoginSettnings.IsUserLoggedIn;
+
+            if (isLoggedIn == true)
+            {
+                //fixa så när man loggar in så står det att man är inloggad
+                List<string> LogIn = new List<string> { LoginSettnings.Username };
+                var windowLogIn = new Classes.Window("", 2, 4, LogIn);
+                windowLogIn.Left = 70;
+                windowLogIn.Draw();
+            }
+            else
+            {
+                List<string> LogIn = new List<string> { "L: Login" };
+                var windowLogIn = new Classes.Window("", 2, 4, LogIn);
+                windowLogIn.Left = 70;
+                windowLogIn.Draw();
+            }
+        }
     }
 }
