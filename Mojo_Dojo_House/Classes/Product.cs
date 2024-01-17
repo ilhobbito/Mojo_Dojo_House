@@ -19,6 +19,6 @@ namespace Mojo_Dojo_House.Classes
 
         public virtual Category Category { get; set; }
         public virtual Supplier Supplier { get; set; } // Single Supplier
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; s}
     }
 }
