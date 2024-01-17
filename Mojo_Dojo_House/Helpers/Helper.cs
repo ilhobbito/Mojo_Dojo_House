@@ -183,6 +183,8 @@ namespace Mojo_Dojo_House.Helpers
                     db.Category.Remove(category);
                     db.SaveChanges();
                 }
+                Console.WriteLine($"Product {id} has been deleted");
+                Thread.Sleep(1000);
             }
         }
 
@@ -206,20 +208,96 @@ namespace Mojo_Dojo_House.Helpers
                         db.Person.Remove(user.Person);
                     }
 
-                    // If the user has a linked card, delete it
                     if (user.Card != null)
                     {
                         db.Card.Remove(user.Card);
                     }
 
-                    // Finally, delete the user
                     db.Users.Remove(user);
 
-                    // Save the changes to the database
                     db.SaveChanges();
                 }
                 Console.WriteLine($"User {id} has now been deleted");
                 Thread.Sleep(1000);
+            }
+        }
+
+        public static void AddUserInfo()
+        {
+
+            Console.WriteLine("city");
+            string city = Console.ReadLine();
+
+            Console.WriteLine("street");
+            string street = Console.ReadLine();
+
+            Console.WriteLine("country");
+            string country = Console.ReadLine();
+
+            Console.WriteLine("zipcode");
+            string zipcode = Console.ReadLine();
+
+            using (var db = new MyDbContext())
+            {
+                var newAddress = new Address { City = city, Street = street, Country = country, Zipcode = zipcode };
+                db.Address.Add(newAddress);
+                db.SaveChanges();
+            }
+            Console.WriteLine("firstname");
+            string firstName = Console.ReadLine();
+
+            Console.WriteLine("Last name");
+            string lastName = Console.ReadLine();
+
+            Console.WriteLine("phonenumber");
+            string phoneNumber = Console.ReadLine();
+
+            Console.WriteLine("email");
+            string email = Console.ReadLine();
+
+            Console.WriteLine("age");
+            int age = int.Parse(Console.ReadLine());
+
+
+
+            using (var db = new MyDbContext())
+            {
+                int adressId = 14;
+                var newPerson = new Person { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email, Age = age, AddressId = adressId };
+
+                db.Person.Add(newPerson);
+                db.SaveChanges();
+
+            }
+
+            Console.WriteLine("cardnumber");
+            string cardNumber = Console.ReadLine();
+
+
+
+            using (var db = new MyDbContext())
+            {
+                int personId = 11;
+                var newCard = new Card { CardNumber = cardNumber, PersonId = personId };
+                db.Card.Add(newCard);
+                db.SaveChanges();
+            }
+            Console.WriteLine("UserName");
+            string userName = Console.ReadLine();
+
+            Console.WriteLine("password");
+            string passWord = Console.ReadLine();
+
+
+            
+            using (var db = new MyDbContext())
+            {
+                int personId = 11;
+                int cardId = 11;
+                var newUser = new User { Username = userName, Password = passWord, PersonId = personId, CardId = cardId };
+
+                db.Users.Add(newUser);
+                db.SaveChanges();
             }
         }
     }

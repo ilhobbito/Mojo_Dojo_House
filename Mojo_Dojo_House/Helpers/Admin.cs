@@ -73,7 +73,7 @@ namespace Mojo_Dojo_House.Helpers
                     break;
                 case 't':
                     Draw.DrawChangeProductPage();
-                    DeleteSite();
+                    DeleteProductSite();
                     break;
                 case 'a':
                     Draw.DrawChangeProductPage();
@@ -115,7 +115,7 @@ namespace Mojo_Dojo_House.Helpers
                     break;
                 case 't':
                     Draw.DrawChangeCategoryPage();
-                    DeleteSite();
+                    DeleteCategorySite();
                     break;
                 case 'a':
                     Draw.DrawChangeCategoryPage();
@@ -157,7 +157,7 @@ namespace Mojo_Dojo_House.Helpers
                     break;
                 case 't':
                     Draw.DrawChangeUserPage();
-                    DeleteSite();
+                    DeleteUserSite();
                     break;
                 case 'a':
                     Draw.DrawChangeUserPage();
@@ -169,7 +169,7 @@ namespace Mojo_Dojo_House.Helpers
                     break;
             }
         }
-        public static void DeleteSite()
+        public static void DeleteUserSite()
         {
             var user = Helper.GetUserAdmin();
             var productWindow = new Classes.Window($"", 20, 5, user);
@@ -186,19 +186,33 @@ namespace Mojo_Dojo_House.Helpers
         public static void AddProductSite()
         {
         }
+        public static void DeleteProductSite()
+        {
+            var product = Helper.GetProductsAdmin();
+            var productWindow = new Classes.Window($"", 20, 5, product);
+            productWindow.Draw();
+
+            Console.WriteLine("Enter Id of the product you would like to delete");
+            int Id = int.Parse(Console.ReadLine());
+
+            Helper.DeleteProductInfo(Id);
+        }
         public static void ChangeCategorySite()
         {
         }
         public static void AddCategorySite()
         {
         }
+        public static void DeleteCategorySite()
+        {
+
+        }
         public static void ChangeUserSite()
         {
         }
         public static void AddUserSite()
         {
+            Helper.AddUserInfo();
         }
-
-
     }
 }
