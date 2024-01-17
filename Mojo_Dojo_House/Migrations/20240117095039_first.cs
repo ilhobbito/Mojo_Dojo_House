@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Mojo_Dojo_House.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -105,28 +105,6 @@ namespace Mojo_Dojo_House.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CardId = table.Column<int>(type: "int", nullable: true),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PersonId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Person_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "Person",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
@@ -156,6 +134,33 @@ namespace Mojo_Dojo_House.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CardId = table.Column<int>(type: "int", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PersonId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_Card_CardId",
+                        column: x => x.CardId,
+                        principalTable: "Card",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Users_Person_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Person",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Order",
                 columns: table => new
                 {
@@ -173,11 +178,6 @@ namespace Mojo_Dojo_House.Migrations
                         name: "FK_Order_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Order_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -240,11 +240,6 @@ namespace Mojo_Dojo_House.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_UserId",
-                table: "Order",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OrderDetail_OrderId",
                 table: "OrderDetail",
                 column: "OrderId");
@@ -280,6 +275,11 @@ namespace Mojo_Dojo_House.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_CardId",
+                table: "Users",
+                column: "CardId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_PersonId",
                 table: "Users",
                 column: "PersonId",
@@ -290,31 +290,31 @@ namespace Mojo_Dojo_House.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Card");
-
-            migrationBuilder.DropTable(
                 name: "OrderDetail");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "Order");
+
+            migrationBuilder.DropTable(
+                name: "Card");
 
             migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Person");
 
             migrationBuilder.DropTable(
                 name: "Category");
 
             migrationBuilder.DropTable(
                 name: "Suppliers");
-
-            migrationBuilder.DropTable(
-                name: "Person");
 
             migrationBuilder.DropTable(
                 name: "Address");

@@ -12,8 +12,8 @@ using Mojo_Dojo_House.Classes;
 namespace Mojo_Dojo_House.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240112083641_First")]
-    partial class First
+    [Migration("20240117095039_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,8 +114,6 @@ namespace Mojo_Dojo_House.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -288,6 +286,8 @@ namespace Mojo_Dojo_House.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CardId");
+
                     b.HasIndex("PersonId")
                         .IsUnique();
 
@@ -310,12 +310,6 @@ namespace Mojo_Dojo_House.Migrations
                     b.HasOne("Mojo_Dojo_House.Classes.Product", null)
                         .WithMany("Orders")
                         .HasForeignKey("ProductId");
-
-                    b.HasOne("Mojo_Dojo_House.Classes.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Mojo_Dojo_House.Classes.OrderDetail", b =>
@@ -385,11 +379,17 @@ namespace Mojo_Dojo_House.Migrations
 
             modelBuilder.Entity("Mojo_Dojo_House.Classes.User", b =>
                 {
+                    b.HasOne("Mojo_Dojo_House.Classes.Card", "Card")
+                        .WithMany()
+                        .HasForeignKey("CardId");
+
                     b.HasOne("Mojo_Dojo_House.Classes.Person", "Person")
                         .WithOne("User")
                         .HasForeignKey("Mojo_Dojo_House.Classes.User", "PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Card");
 
                     b.Navigation("Person");
                 });
@@ -420,11 +420,6 @@ namespace Mojo_Dojo_House.Migrations
             modelBuilder.Entity("Mojo_Dojo_House.Classes.Supplier", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.User", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

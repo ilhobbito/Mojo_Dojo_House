@@ -21,7 +21,7 @@ namespace Mojo_Dojo_House.Helpers
                 if (username == "admin" && password == "admin")
                 {
                     LoginSettnings.Login(username);
-                    Draw.AdminPage();
+                    Admin.AdminSite();
                 }
                 else
                 {

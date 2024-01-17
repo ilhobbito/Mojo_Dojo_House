@@ -118,10 +118,7 @@ namespace Mojo_Dojo_House.Helpers
             windowTop2.Draw();
 
             WelcomeSign();
-            LoginSettnings.LoginBox();
-            Admin.AdminSite();
-
-            
+            LoginSettnings.LoginBox();     
         }
         public static void ProductPage()
         {
@@ -150,20 +147,25 @@ namespace Mojo_Dojo_House.Helpers
             LoginSettnings.LoginBox();
         }
 
-        public static void DrawDeleteProductPage()
-        {
-            WelcomeSign();
-
-
-        }
-
         public static void DrawChangeProductPage()
         {
+            AdminBanner();
             WelcomeSign();
+            ProductPageInfo(); 
         }
-        public static void DrawAddProductPage()
+
+        public static void DrawChangeCategoryPage()
         {
             WelcomeSign();
+            AdminBanner();
+            CategoryPageInfo();
+            
+        }
+        public static void DrawChangeUserPage()
+        {
+            WelcomeSign();
+            AdminBanner();
+            UserPageInfo();
         }
 
         public static void WelcomeSign()
@@ -180,7 +182,23 @@ namespace Mojo_Dojo_House.Helpers
             windowTop2.Draw();
         }
 
-
-
+        public static void UserPageInfo()
+        {
+            var user = Helper.GetUserAdmin();
+            var productWindow = new Classes.Window($"", 20, 5, user);
+            productWindow.Draw();
+        }
+        public static void CategoryPageInfo()
+        {
+            var user = Helper.GetCategoriesAdmin();
+            var productWindow = new Classes.Window($"", 20, 5, user);
+            productWindow.Draw();
+        }
+        public static void ProductPageInfo()
+        {
+            var user = Helper.GetProductsAdmin();
+            var productWindow = new Classes.Window($"", 20, 5, user);
+            productWindow.Draw();
+        }
     }
 }

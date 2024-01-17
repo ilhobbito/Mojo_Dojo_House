@@ -65,7 +65,8 @@ namespace Mojo_Dojo_House
                         Draw.DrawStartMenu();
                         break;
                     case 's':
-                        Helper.Search();
+                        //Helper.Desc();
+                        //Helper.Search();
                         break;
                 }
             }

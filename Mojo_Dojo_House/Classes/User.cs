@@ -13,7 +13,7 @@ namespace Mojo_Dojo_House.Classes
         public string Username { get; set; }
         public string Password { get; set; }
         public int PersonId { get; set; }
+        public virtual Card Card { get; set; }
         public virtual Person Person { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
     }
 }
