@@ -12,8 +12,6 @@ namespace Mojo_Dojo_House.Classes
         public int? UserId { get; set; }
         public double TotalPrice { get; set; }
         public DateTime? CurrentDate { get; set; }
-
-        public virtual User User { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
