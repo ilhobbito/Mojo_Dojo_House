@@ -52,7 +52,40 @@ namespace Mojo_Dojo_House.Helpers
             }
         }
 
+        public static string GetProductInfo(int categoryID, int Keypress)
+        {
+            int i = Keypress;
+            var Product = new List<string>();
+            using (var db = new MyDbContext())
+            {
+                var products = db.Product.Where(c => c.CategoryId == categoryID).ToList();
+                foreach (var product in products)
+                {
+                    Product.Add(product.Name);
+                }
 
+                string item = Product[i];
+
+                return item;
+            }
+        }
+
+        public static int GetItemId(string productName)
+        {
+            var Product = new List<int>();
+            using (var db = new MyDbContext())
+            {
+                var products = db.Product.Where(c => c.Name == productName).ToList();
+                foreach(var product in products)
+                {
+                    Product.Add(product.Id);
+                }
+
+                int itemId = Product[0];
+
+                return itemId;
+            }
+        }
 
         public static void Search()
         {
@@ -71,15 +104,14 @@ namespace Mojo_Dojo_House.Helpers
                 }
             }
         }
-        public static void Desc()
+        public static void Desc(int itemId)
         {
+            int choice = itemId;
             using (var db = new MyDbContext())
             {
                 // Load products from the database
                 var products = db.Product.ToList();
 
-                Console.WriteLine("Enter your choice:");
-                int choice = int.Parse(Console.ReadLine());
 
                 if (choice >= 1 && choice <= products.Count)
                 {
@@ -222,12 +254,111 @@ namespace Mojo_Dojo_House.Helpers
             }
         }
 
+        public static void testchanges()
+        {
+            using (var db = new MyDbContext())
+            {
+                Console.WriteLine("Ange namn på personen du vill ändra info om: ");
+
+                var inputName = int.Parse(Console.ReadLine());
+
+                var makeChanges = (from p in db.Person
+                                   where p.Id == inputName
+                                   select p).SingleOrDefault();
+
+
+
+                if (makeChanges != null)
+                {
+                    Console.WriteLine("Ange nytt telefonnummer: ");
+                    string answer = Console.ReadLine();
+
+                    makeChanges.PhoneNumber = answer;
+                }
+                 
+                db.SaveChanges();
+            }
+        }
+        public static List<string> CategoryUpdating()
+        {
+            var Categories = new List<string>();
+            var i = 1;
+            using (var db = new MyDbContext())
+            {
+                foreach (var name in db.Category)
+                {
+                    string category = i + ". " + name.Name;
+                    Categories.Add(category);
+                    i++;
+                }
+            }
+            return Categories;
+        }
+
+        //needs fixing
+        //public static List<string> ProductUpdating()
+        //{
+        //    var Products = new List<string>();
+        //    List<string> key = new List<string> {"Q: ", "W: ", "E: ", "R: ", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",  "",};
+        //    using (var db = new MyDbContext())
+        //    {
+        //        foreach (var name in db.Product)
+        //        {
+        //            string product = key + "." + name.Name;
+        //        }
+        //    }
+        //    return Products;
+        //}
+
+        public static void GetCategory(int num)
+        {
+            var i = num;
+            using (var db = new MyDbContext())
+            {
+                var category = new List<string>();
+                var categories = from c in db.Category
+                                  where c.Name != null 
+                                  orderby c.Id
+                                  select c;
+                categories.ToList();
+
+                foreach (var c in categories)
+                {
+                    category.Add(c.Name);
+                }
+                Console.WriteLine(category[i]);
+
+                
+            }
+        }
+        public static int GetCategoryId(int num)
+        {
+            var i = num;
+            using (var db = new MyDbContext())
+            {
+                var category = new List<int>();
+                var categories = from c in db.Category
+                                 where c.Id != null
+                                 orderby c.Id
+                                 select c;
+                categories.ToList();
+
+                foreach (var c in categories)
+                {
+                    category.Add(c.Id);
+                }
+
+                int Number = category[i];
+                return Number;
+            }
+        }
+
         public static void AddUserInfo()
         {
 
             Console.WriteLine("city");
             string city = Console.ReadLine();
-
+                             
             Console.WriteLine("street");
             string street = Console.ReadLine();
 

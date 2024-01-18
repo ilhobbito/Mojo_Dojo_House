@@ -13,19 +13,13 @@ namespace Mojo_Dojo_House.Helpers
 
         public static void DrawStartMenu()
         {
-            //lägg databas istället
-            List<string> categoriesText = new List<string> { "Lego", "Drones", "Nerf", "Board Games", "Collection Items" };
-
-
-            //använda databas för varukorg
             List<string> cartText = new List<string> { "1 st Blå byxor", "1 st Grön tröja", "1 st Röd skjorta" };
             var windowCart = new Classes.Window("Din varukorg", 60, 8, cartText);
             windowCart.Draw();
 
-            //använda databas för recommended
-            var recommended = Helper.GetRecommended();
-            var recommendedText = new Classes.Window("Recommended Products", 2, 7, recommended);
-            recommendedText.Draw();
+            //var recommended = Helper.GetRecommended();
+            //var recommendedText = new Classes.Window("Recommended Products", 2, 7, recommended);
+            //recommendedText.Draw();
 
             WelcomeSign();
 
@@ -93,15 +87,14 @@ namespace Mojo_Dojo_House.Helpers
             var shippingInfo = new Classes.Window("Välj fraktsätt med: ", 2, 6, shippingsInfo);
             shippingInfo.Draw();
         }
-        public static void DrawCategories(string categories, int categoriesId)
+        public static void DrawCategories(int categoriesId)
         {
-            string category = categories;
-            var categoryId = categoriesId;
+            //string category = categories;
 
-           
-            var products = Helper.GetProducts(categoryId);
-            var productWindow = new Classes.Window($"kategori: {category}", 20, 5, products);
-            productWindow.Draw();
+            //needs fixing
+            //var products = Helper.ProductUpdating();
+            //var productWindow = new Classes.Window($"kategori:", 40, 5, products);
+            //productWindow.Draw();
 
             WelcomeSign();
 
@@ -177,8 +170,9 @@ namespace Mojo_Dojo_House.Helpers
 
         public static void Categories()
         {
-            List<string> topText2 = new List<string> { "1:Lego  2:Drones  3: Nerf  4: Board Games  5:Collection Items" };
-            var windowTop2 = new Classes.Window("", 20, 1, topText2);
+            var topText2 = Helper.CategoryUpdating();
+            
+            var windowTop2 = new Classes.Window("", 2, 6, topText2);
             windowTop2.Draw();
         }
 

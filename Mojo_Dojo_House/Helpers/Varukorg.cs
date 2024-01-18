@@ -19,30 +19,30 @@ namespace Mojo_Dojo_House.Helpers
                     //kategori 1
                     string category1 = "Lego";
                     int category1Id = 1;
-                    Draw.DrawCategories(category1, category1Id);
+                    Draw.DrawCategories(category1Id);
                     break;
                 case '2':
                     string category2 = "Drones";
                     int category2Id = 2;
-                    Draw.DrawCategories(category2, category2Id);
+                    Draw.DrawCategories(category2Id);
                     //Kategori 2
                     break;
                 case '3':
                     string category3 = "Nerf";
                     int category3Id = 3;
-                    Draw.DrawCategories(category3, category3Id);
+                    Draw.DrawCategories(category3Id);
                     //Kategori 3
                     break;
                 case '4':
                     string category4 = "Board Games";
                     int category4Id = 4;
-                    Draw.DrawCategories(category4, category4Id);
+                    Draw.DrawCategories(category4Id);
                     //Kategori 4
                     break;
                 case '5':
                     string category5 = "Collection Items";
                     int category5Id = 5;
-                    Draw.DrawCategories(category5, category5Id);
+                    Draw.DrawCategories(category5Id);
                     break;
                 case 'b':
                     string card1 = "B: Bankkort";

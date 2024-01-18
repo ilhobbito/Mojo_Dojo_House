@@ -1,6 +1,7 @@
 ﻿using Mojo_Dojo_House.Helpers;
 using Mojo_Dojo_House.DataInput;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Azure.Core;
 
 namespace Mojo_Dojo_House
 {
@@ -15,44 +16,67 @@ namespace Mojo_Dojo_House
             //inputData.DataInfo4();
             //inputData.DataInfo5();
             Draw.DrawStartMenu();
+            int locationInfo = 0;
+            string item;
+            int itemId;
             while (true)
-            
             {
                 var key = Console.ReadKey();
-
                 Console.Clear();
                 switch (key.KeyChar)
                 {
                     case '1':
-                        //kategori 1
-                        string category1 = "Lego";
-                        int category1Id = 1;
-                        Draw.DrawCategories(category1, category1Id);
+                        Helper.GetCategory(0);
+                        locationInfo = Helper.GetCategoryId(0);
+                        Draw.DrawCategories(locationInfo);
                         break;
                     case '2':
-                        string category2 = "Drones";
-                        int category2Id = 2;
-                        Draw.DrawCategories(category2, category2Id);
-                        //Kategori 2
+                        Helper.GetCategory(1);
+                        locationInfo = Helper.GetCategoryId(1);
+                        Draw.DrawCategories(locationInfo);
                         break;
                     case '3':
-                        string category3 = "Nerf";
-                        int category3Id = 3;
-                        Draw.DrawCategories(category3, category3Id);
-                        //Kategori 3
+                        Helper.GetCategory(2);
+                        locationInfo = Helper.GetCategoryId(2);
+                        Draw.DrawCategories(locationInfo);
                         break;
                     case '4':
-                        string category4 = "Board Games";
-                        int category4Id = 4;
-                        Draw.DrawCategories(category4, category4Id);
-                        //Kategori 4
+                        Helper.GetCategory(3);
+                        locationInfo = Helper.GetCategoryId(3);
+                        Draw.DrawCategories(locationInfo);
                         break;
                     case '5':
-                        string category5 = "Collection Items";
-                        int category5Id = 5;
-                        Draw.DrawCategories(category5, category5Id);
-                        //Kategori 5
+                        Helper.GetCategory(4);
+                        locationInfo = Helper.GetCategoryId(4);
+                        Draw.DrawCategories(locationInfo);
                         break;
+                    case 'q':
+                        item = Helper.GetProductInfo(locationInfo, 1);
+                        itemId = Helper.GetItemId(item);
+                        //fixa med en draw. för att rita ut en okej bild
+                        Console.WriteLine(item);
+                        Helper.Desc(itemId);
+                        break;
+                    case 'w':
+                        item = Helper.GetProductInfo(locationInfo, 2);
+                        itemId = Helper.GetItemId(item);
+                        Console.WriteLine(item);
+                        Helper.Desc(itemId);
+                        break;
+                    case 'e':
+                        item = Helper.GetProductInfo(locationInfo, 3);
+                        itemId = Helper.GetItemId(item);
+                        Console.WriteLine(item);
+                        Helper.Desc(itemId);
+                        break;
+                    case 'r':
+                        item = Helper.GetProductInfo(locationInfo, 4);
+                        itemId = Helper.GetItemId(item);
+                        Console.WriteLine(item);
+                        Helper.Desc(itemId);
+                        break;
+                    case 'b':
+                        
                     case 'v':
                         Draw.DrawVaruKorg();
                         Varukorg.ShoppingCart();
@@ -68,6 +92,10 @@ namespace Mojo_Dojo_House
                         //Helper.Desc();
                         //Helper.Search();
                         break;
+                    default:
+                        Draw.DrawStartMenu();
+                        break;
+
                 }
             }
         }
