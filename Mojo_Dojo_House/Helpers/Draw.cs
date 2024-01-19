@@ -13,13 +13,11 @@ namespace Mojo_Dojo_House.Helpers
 
         public static void DrawStartMenu()
         {
-            List<string> cartText = new List<string> { "1 st Blå byxor", "1 st Grön tröja", "1 st Röd skjorta" };
-            var windowCart = new Classes.Window("Din varukorg", 60, 8, cartText);
-            windowCart.Draw();
+            var recommended = Helper.GetRecommended(); 
+            var recommendedText = new Classes.Window("Rekommenderade produkter", 60, 8, recommended);
+            recommendedText.Draw();
 
-            //var recommended = Helper.GetRecommended();
-            //var recommendedText = new Classes.Window("Recommended Products", 2, 7, recommended);
-            //recommendedText.Draw();
+            ShowShoppingCart();
 
             WelcomeSign();
 
@@ -31,18 +29,24 @@ namespace Mojo_Dojo_House.Helpers
         public static void DrawVaruKorg()
         {
 
-            //använda databas för recommended
-            List<string> cartText = new List<string> { "Blå byxor 1st", "Grön tröja 1sr", "Röd skjorta 1st" };
-            var windowCart = new Classes.Window("Din varukorg", 2, 6, cartText);
-            windowCart.Draw();
 
-            List<string> frakt = new List<string> { "Välj fraktsätt med: Ombud eller Postnord, tryck O för Ombud, P för Postnord " };
-            var shippingInfo = new Classes.Window("Ombud: ", 25, 6, frakt);
-            shippingInfo.Draw();
+            ShoppingCart();
 
-            List<string> Betala = new List<string> { "Vad vill du betala med", "Bankkort", "Swish", "Klarna" };
-            var BetalaWindow = new Classes.Window("betala", 30, 9, Betala);
-            BetalaWindow.Draw();
+            double TotalPrice = Helper.CalculateShoppingCart();
+            var totalPrice = new List<string>();
+
+            totalPrice.Add(TotalPrice.ToString());
+
+            var Price = new Classes.Window("TotalPris: ", 40, 15, totalPrice);
+            Price.Draw();
+
+            //List<string> frakt = new List<string> { "Välj fraktsätt med: Ombud eller Postnord, tryck O för Ombud, P för Postnord " };
+            //var shippingInfo = new Classes.Window("Ombud: ", 25, 6, frakt);
+            //shippingInfo.Draw();
+
+            //List<string> Betala = new List<string> { "Vad vill du betala med", "Bankkort", "Swish", "Klarna" };
+            //var BetalaWindow = new Classes.Window("betala", 30, 9, Betala);
+            //BetalaWindow.Draw();
 
             WelcomeSign();
 
@@ -89,12 +93,41 @@ namespace Mojo_Dojo_House.Helpers
         }
         public static void DrawCategories(int categoriesId)
         {
-            //string category = categories;
+            int category = categoriesId;
 
-            //needs fixing
-            //var products = Helper.ProductUpdating();
-            //var productWindow = new Classes.Window($"kategori:", 40, 5, products);
-            //productWindow.Draw();
+            var products = Helper.GetProducts(category);
+            var productWindow = new Classes.Window($"kategori:", 40, 5, products);
+            productWindow.Draw();
+
+            List<string> topText2 = new List<string> { "Q:", "W:", "E:", "R" };
+            var window = new Classes.Window($"", 33, 5, topText2);
+            window.Draw();
+
+            ShowShoppingCart();
+
+            WelcomeSign();
+
+            Categories();
+
+            LoginSettnings.LoginBox();
+        }
+        public static void DrawProducts(int productId, string item)
+        {
+            int product = productId;
+            string toy = item;
+            List<string> topText2 = new List<string> { };
+            topText2.Add(toy);
+
+            var windowTop2 = new Classes.Window("", 20, 1, topText2);
+            windowTop2.Draw();
+
+            List<string> topText = new List<string> { "B: Buy Product" };
+            var windowTop = new Classes.Window("", 50, 10, topText);
+            windowTop.Draw();
+
+            Helper.Desc(product);
+
+            ShowShoppingCart();
 
             WelcomeSign();
 
@@ -106,12 +139,10 @@ namespace Mojo_Dojo_House.Helpers
         {
             Console.Clear();
 
-            List<string> topText2 = new List<string> { "1:Producter  2:Kategorier  3:Kunder" };
-            var windowTop2 = new Classes.Window("", 20, 1, topText2);
-            windowTop2.Draw();
+            AdminBanner();
 
             WelcomeSign();
-            LoginSettnings.LoginBox();     
+            LoginSettnings.LoginBox();
         }
         public static void ProductPage()
         {
@@ -131,7 +162,7 @@ namespace Mojo_Dojo_House.Helpers
 
         public static void AdminBanner()
         {
-            List<string> topText2 = new List<string> { "1:Producter  2:Kategorier  3:Kunder" };
+            List<string> topText2 = new List<string> { "1:Produkter  2:Kategorier  3:Kunder" };
             var windowTop2 = new Classes.Window("", 20, 1, topText2);
             windowTop2.Draw();
 
@@ -144,7 +175,7 @@ namespace Mojo_Dojo_House.Helpers
         {
             AdminBanner();
             WelcomeSign();
-            ProductPageInfo(); 
+            ProductPageInfo();
         }
 
         public static void DrawChangeCategoryPage()
@@ -152,7 +183,7 @@ namespace Mojo_Dojo_House.Helpers
             WelcomeSign();
             AdminBanner();
             CategoryPageInfo();
-            
+
         }
         public static void DrawChangeUserPage()
         {
@@ -171,7 +202,7 @@ namespace Mojo_Dojo_House.Helpers
         public static void Categories()
         {
             var topText2 = Helper.CategoryUpdating();
-            
+
             var windowTop2 = new Classes.Window("", 2, 6, topText2);
             windowTop2.Draw();
         }
@@ -192,6 +223,21 @@ namespace Mojo_Dojo_House.Helpers
         {
             var user = Helper.GetProductsAdmin();
             var productWindow = new Classes.Window($"", 20, 5, user);
+            productWindow.Draw();
+        }
+        public static void ShoppingCart()
+        {
+            var product = Helper.GetShoppingCard();
+            var productWindow = new Classes.Window($"Varukorg", 30, 4, product);
+            productWindow.Draw();
+        }
+        public static void ShowShoppingCart()
+        {
+            var product = Helper.GetShoppingCartCount();
+            List<string> NumOfProducts = new List<string>();
+            var stringproduct = product.ToString();
+            NumOfProducts.Add(stringproduct);
+            var productWindow = new Classes.Window($"Varukorg", 82, 1, NumOfProducts);
             productWindow.Draw();
         }
     }

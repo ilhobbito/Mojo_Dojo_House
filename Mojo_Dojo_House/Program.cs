@@ -17,8 +17,8 @@ namespace Mojo_Dojo_House
             //inputData.DataInfo5();
             Draw.DrawStartMenu();
             int locationInfo = 0;
-            string item;
-            int itemId;
+            string item = "";
+            int itemId = 999;
             while (true)
             {
                 var key = Console.ReadKey();
@@ -53,33 +53,40 @@ namespace Mojo_Dojo_House
                     case 'q':
                         item = Helper.GetProductInfo(locationInfo, 1);
                         itemId = Helper.GetItemId(item);
-                        //fixa med en draw. för att rita ut en okej bild
-                        Console.WriteLine(item);
-                        Helper.Desc(itemId);
+                        Draw.DrawProducts(itemId, item);
                         break;
                     case 'w':
                         item = Helper.GetProductInfo(locationInfo, 2);
                         itemId = Helper.GetItemId(item);
-                        Console.WriteLine(item);
-                        Helper.Desc(itemId);
+                        Draw.DrawProducts(itemId, item);
                         break;
                     case 'e':
                         item = Helper.GetProductInfo(locationInfo, 3);
                         itemId = Helper.GetItemId(item);
-                        Console.WriteLine(item);
-                        Helper.Desc(itemId);
+                        Draw.DrawProducts(itemId, item);
                         break;
                     case 'r':
                         item = Helper.GetProductInfo(locationInfo, 4);
                         itemId = Helper.GetItemId(item);
-                        Console.WriteLine(item);
-                        Helper.Desc(itemId);
+                        Draw.DrawProducts(itemId, item);
                         break;
                     case 'b':
-                        
+                        double price = Helper.GetItemPrice(itemId);
+                        Helper.addProductShoppingCart(price, itemId);
+                        Draw.DrawProducts(itemId, item);
+                        break;
                     case 'v':
                         Draw.DrawVaruKorg();
-                        Varukorg.ShoppingCart();
+                        break;
+                    case 'a':
+
+                        //ändra antal produkter
+                        break;
+                    case 'd':
+                        //ta bort en produkt/flera prdukter
+                        break;
+                    case 'f':
+                        //faktura
                         break;
                     case 'l':
                         Draw.DrawLogIn();

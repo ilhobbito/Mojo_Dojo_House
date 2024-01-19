@@ -11,7 +11,7 @@ namespace Mojo_Dojo_House.Classes
         public int Id { get; set; }
         public int productId { get; set; }
         public int Quantity { get; set; }
-        public int TotalPrice { get; set; }
+        public double TotalPrice { get; set; }
 
         public virtual Product Product { get; set; }
     }

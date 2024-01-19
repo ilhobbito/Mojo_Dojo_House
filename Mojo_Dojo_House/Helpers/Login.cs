@@ -62,14 +62,14 @@ namespace Mojo_Dojo_House.Helpers
             {
                 //fixa så när man loggar in så står det att man är inloggad
                 List<string> LogIn = new List<string> { LoginSettnings.Username };
-                var windowLogIn = new Classes.Window("", 2, 4, LogIn);
+                var windowLogIn = new Classes.Window("", 2, 1, LogIn);
                 windowLogIn.Left = 70;
                 windowLogIn.Draw();
             }
             else
             {
                 List<string> LogIn = new List<string> { "L: Login" };
-                var windowLogIn = new Classes.Window("", 2, 4, LogIn);
+                var windowLogIn = new Classes.Window("", 2, 1, LogIn);
                 windowLogIn.Left = 70;
                 windowLogIn.Draw();
             }

@@ -70,6 +70,46 @@ namespace Mojo_Dojo_House.Helpers
             }
         }
 
+        public static int GetShoppingCartCount()
+        {
+            using (var db = new MyDbContext())
+            {
+                var Number = db.ShoppingCarts.Count();
+
+                return Number;
+            }
+        }
+
+        public static List<string> GetShoppingCard()
+        {
+            var product = new List<int>();
+            var stringProduct = new List<string>();
+            var productQuantity = new List<int>();
+            var stringProductQuantity = new List<string>();
+            var i = 0;
+            using (var db = new MyDbContext())
+            {
+                var products = db.ShoppingCarts.ToList();
+                foreach(var Product in products)
+                {
+                    product.Add(Product.productId);
+                    var productId = product[i];
+                    var productName = db.Product.Where(c => c.Id == productId).ToList();
+                    
+                    foreach(var productNames in productName)
+                    {
+                        stringProduct.Add(productNames.Name);
+
+                    }
+                    i++;
+                    foreach(var Product1 in products)
+                    {
+                        productQuantity.Add(Product1.Quantity);
+                    }
+                }
+                return stringProduct;
+            }
+        }
         public static int GetItemId(string productName)
         {
             var Product = new List<int>();
@@ -84,6 +124,62 @@ namespace Mojo_Dojo_House.Helpers
                 int itemId = Product[0];
 
                 return itemId;
+            }
+        }
+        public static double GetItemPrice(int ItemId)
+        {
+            double price;
+            var Product = new List<double>();
+            using (var db = new MyDbContext())
+            {
+                var products = db.Product.Where(c => c.Id == ItemId).ToList();
+                foreach (var product in products)
+                {
+                    Product.Add(product.Price);
+                }
+
+                price = Product[0];
+            }
+            return price;
+        }
+        public static double CalculateShoppingCart()
+        {
+            var SumOfitem = new List<double>();
+            int i = 0;
+            double totalPrice = 0;
+            using (var db = new MyDbContext())
+            {
+                var shoppingCart = db.ShoppingCarts;
+                foreach (var item in shoppingCart)
+                {
+                    SumOfitem.Add(item.Quantity * item.TotalPrice);
+                }
+                foreach(var item in SumOfitem)
+                {
+                    totalPrice += SumOfitem[i];
+                    i++;
+                }
+                return totalPrice;
+            }
+        }
+
+        public static void addProductShoppingCart(double price, int productId)
+        {
+            using (var db = new MyDbContext())
+            {
+                var existingProduct = db.ShoppingCarts.FirstOrDefault(p => p.productId == productId);
+
+                if (existingProduct != null)
+                {
+                    existingProduct.Quantity += 1;
+                }
+                else
+                {
+                    var ShoppingCart1 = new ShoppingCart { productId = productId, Quantity = 1, TotalPrice = price };
+                    db.ShoppingCarts.Add(ShoppingCart1);
+                }
+
+                db.SaveChanges();
             }
         }
 
@@ -116,7 +212,12 @@ namespace Mojo_Dojo_House.Helpers
                 if (choice >= 1 && choice <= products.Count)
                 {
                     Product selectedProduct = products[choice - 1];
-                    Console.WriteLine(selectedProduct.Description);
+
+
+                    List<string> topText2 = new List<string> {};
+                    topText2.Add(selectedProduct.Description);
+                    var productWindow = new Classes.Window($"", 30, 6, topText2);
+                    productWindow.Draw();
                 }
                 else
                 {
@@ -294,22 +395,6 @@ namespace Mojo_Dojo_House.Helpers
             }
             return Categories;
         }
-
-        //needs fixing
-        //public static List<string> ProductUpdating()
-        //{
-        //    var Products = new List<string>();
-        //    List<string> key = new List<string> {"Q: ", "W: ", "E: ", "R: ", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",  "",};
-        //    using (var db = new MyDbContext())
-        //    {
-        //        foreach (var name in db.Product)
-        //        {
-        //            string product = key + "." + name.Name;
-        //        }
-        //    }
-        //    return Products;
-        //}
-
         public static void GetCategory(int num)
         {
             var i = num;
