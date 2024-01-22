@@ -12,8 +12,8 @@ using Mojo_Dojo_House.Classes;
 namespace Mojo_Dojo_House.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240119111606_2nd")]
-    partial class _2nd
+    [Migration("20240121225941_second")]
+    partial class second
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,52 +25,6 @@ namespace Mojo_Dojo_House.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Street")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Zipcode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Address");
-                });
-
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.Card", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CardNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonId");
-
-                    b.ToTable("Card");
-                });
-
             modelBuilder.Entity("Mojo_Dojo_House.Classes.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -81,6 +35,9 @@ namespace Mojo_Dojo_House.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -102,30 +59,21 @@ namespace Mojo_Dojo_House.Migrations
                     b.Property<DateTime?>("CurrentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int?>("PersonId")
                         .HasColumnType("int");
 
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Order");
                 });
 
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.OrderDetail", b =>
+            modelBuilder.Entity("Mojo_Dojo_House.Classes.OrderProduct", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -135,13 +83,11 @@ namespace Mojo_Dojo_House.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
+                    b.HasKey("OrderId", "ProductId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetail");
+                    b.ToTable("OrderProduct");
                 });
 
             modelBuilder.Entity("Mojo_Dojo_House.Classes.Person", b =>
@@ -152,11 +98,14 @@ namespace Mojo_Dojo_House.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("Age")
                         .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -170,9 +119,13 @@ namespace Mojo_Dojo_House.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("PostCode")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("AddressId");
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Person");
                 });
@@ -194,6 +147,9 @@ namespace Mojo_Dojo_House.Migrations
                     b.Property<int>("InventoryBalance")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -204,14 +160,12 @@ namespace Mojo_Dojo_House.Migrations
                     b.Property<bool?>("Recommended")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("SupplierId")
-                        .HasColumnType("int");
+                    b.Property<string>("Supplier")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("SupplierId");
 
                     b.ToTable("Product");
                 });
@@ -240,88 +194,25 @@ namespace Mojo_Dojo_House.Migrations
                     b.ToTable("ShoppingCarts");
                 });
 
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.Supplier", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
-
-                    b.ToTable("Suppliers");
-                });
-
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CardId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CardId");
-
-                    b.HasIndex("PersonId")
-                        .IsUnique();
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.Card", b =>
+            modelBuilder.Entity("Mojo_Dojo_House.Classes.Order", b =>
                 {
                     b.HasOne("Mojo_Dojo_House.Classes.Person", "Person")
-                        .WithMany("Cards")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Orders")
+                        .HasForeignKey("PersonId");
 
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.Order", b =>
-                {
-                    b.HasOne("Mojo_Dojo_House.Classes.Product", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("ProductId");
-                });
-
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.OrderDetail", b =>
+            modelBuilder.Entity("Mojo_Dojo_House.Classes.OrderProduct", b =>
                 {
                     b.HasOne("Mojo_Dojo_House.Classes.Order", "Order")
-                        .WithMany("OrderDetails")
+                        .WithMany("OrderProducts")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Mojo_Dojo_House.Classes.Product", "Product")
-                        .WithMany()
+                        .WithMany("OrderProducts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -331,30 +222,13 @@ namespace Mojo_Dojo_House.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.Person", b =>
-                {
-                    b.HasOne("Mojo_Dojo_House.Classes.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-                });
-
             modelBuilder.Entity("Mojo_Dojo_House.Classes.Product", b =>
                 {
                     b.HasOne("Mojo_Dojo_House.Classes.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("Mojo_Dojo_House.Classes.Supplier", "Supplier")
-                        .WithMany("Products")
-                        .HasForeignKey("SupplierId");
-
                     b.Navigation("Category");
-
-                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("Mojo_Dojo_House.Classes.ShoppingCart", b =>
@@ -368,32 +242,6 @@ namespace Mojo_Dojo_House.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.Supplier", b =>
-                {
-                    b.HasOne("Mojo_Dojo_House.Classes.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.Navigation("Address");
-                });
-
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.User", b =>
-                {
-                    b.HasOne("Mojo_Dojo_House.Classes.Card", "Card")
-                        .WithMany()
-                        .HasForeignKey("CardId");
-
-                    b.HasOne("Mojo_Dojo_House.Classes.Person", "Person")
-                        .WithOne("User")
-                        .HasForeignKey("Mojo_Dojo_House.Classes.User", "PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Card");
-
-                    b.Navigation("Person");
-                });
-
             modelBuilder.Entity("Mojo_Dojo_House.Classes.Category", b =>
                 {
                     b.Navigation("Products");
@@ -401,25 +249,17 @@ namespace Mojo_Dojo_House.Migrations
 
             modelBuilder.Entity("Mojo_Dojo_House.Classes.Order", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("Mojo_Dojo_House.Classes.Person", b =>
                 {
-                    b.Navigation("Cards");
-
-                    b.Navigation("User")
-                        .IsRequired();
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Mojo_Dojo_House.Classes.Product", b =>
                 {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("Mojo_Dojo_House.Classes.Supplier", b =>
-                {
-                    b.Navigation("Products");
+                    b.Navigation("OrderProducts");
                 });
 #pragma warning restore 612, 618
         }

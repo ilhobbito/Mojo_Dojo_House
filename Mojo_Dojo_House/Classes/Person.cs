@@ -14,10 +14,10 @@ namespace Mojo_Dojo_House.Classes
         public string? PhoneNumber { get; set; }
         public string? Email { get; set; }
         public int? Age { get; set; }
-        public int AddressId { get; set; }
-
-        public virtual Address Address { get; set; }
-        public virtual User User { get; set; }
-        public virtual ICollection<Card> Cards { get; set; }
+        public string? City { get; set; }
+        public string? Country { get; set; }
+        public string? Street {  get; set; }
+        public string? PostCode { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }

@@ -137,29 +137,35 @@ namespace Mojo_Dojo_House.Helpers
         }
         public static void AdminPage()
         {
-            Console.Clear();
-
             AdminBanner();
-
             WelcomeSign();
             LoginSettnings.LoginBox();
         }
-        public static void ProductPage()
-        {
-            AdminBanner();
-            WelcomeSign();
-        }
-        public static void CategoryPage()
-        {
-            AdminBanner();
-            WelcomeSign();
-        }
-        public static void UserPage()
-        {
-            AdminBanner();
-            WelcomeSign();
-        }
 
+        public static void AdminProducts()
+        {
+            AdminBanner();
+            WelcomeSign();
+            LoginSettnings.LoginBox();
+        }
+        public static void AdminCategories()
+        {
+            AdminBanner();
+            WelcomeSign();
+            LoginSettnings.LoginBox();
+        }
+        public static void AdminUsers()
+        {
+            AdminBanner();
+            WelcomeSign();
+            LoginSettnings.LoginBox();
+        }
+        public static void AdminOrderInfo()
+        {
+            AdminBanner();
+            WelcomeSign();
+            LoginSettnings.LoginBox();
+        }
         public static void AdminBanner()
         {
             List<string> topText2 = new List<string> { "1:Produkter  2:Kategorier  3:Kunder" };

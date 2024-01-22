@@ -5,39 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Mojo_Dojo_House.Classes;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Mojo_Dojo_House.DataInput;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
+using Azure;
+using System.Diagnostics.Metrics;
+using System.IO;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+
 
 namespace Mojo_Dojo_House.Helpers
 {
     internal class Helper
     {
-        public static double CalculateOrderTotal(MyDbContext myDb, int[] productIds, int[] quantities, List<OrderDetail> orderDetails)
-        {
-            double totalPrice = 0;
-            for (int i = 0; i < productIds.Length; i++)
-            {
-                var product = myDb.Product.SingleOrDefault(p => p.Id == productIds[i]);
-                if (product != null)
-                {
-                    totalPrice += product.Price * quantities[i];
-
-                    orderDetails.Add(new OrderDetail { ProductId = productIds[i], Quantity = quantities[i] });
-                }
-            }
-            return totalPrice;
-        }
-
-        public static void CreateAndSaveOrder(MyDbContext myDb, int userId, double totalPrice, List<OrderDetail> orderDetails)
-        {
-            var order = new Order { UserId = userId, TotalPrice = totalPrice, CurrentDate = DateTime.Now, OrderDetails = orderDetails };
-            myDb.Add(order);
-            myDb.SaveChanges();
-        }
-
         public static List<string> GetProducts(int categoryID)
         {
             var Product = new List<string>();
@@ -281,9 +262,9 @@ namespace Mojo_Dojo_House.Helpers
             var Users = new List<string>();
             using (var db = new MyDbContext())
             {
-                foreach (var user in db.Users)
+                foreach (var user in db.Person)
                 {
-                    string User = user.Id + ". " + user.Username;
+                    string User = user.Id + ". " + user.FirstName+ " " + user.LastName ;
                     Users.Add(User);
 
                 }
@@ -320,41 +301,6 @@ namespace Mojo_Dojo_House.Helpers
                 Thread.Sleep(1000);
             }
         }
-
-        public static void DeleteUserInfo(int id)
-        {
-            int userId = id;
-            using (var db = new MyDbContext())
-            {
-                var user = db.Users.Include(u => u.Person).ThenInclude(p => p.Address)
-                                  .Include(u => u.Card)
-                                  .FirstOrDefault(u => u.Id == userId);
-
-                if (user != null)
-                {
-                    if (user.Person != null)
-                    {
-                        if (user.Person.Address != null)
-                        {
-                            db.Address.Remove(user.Person.Address);
-                        }
-                        db.Person.Remove(user.Person);
-                    }
-
-                    if (user.Card != null)
-                    {
-                        db.Card.Remove(user.Card);
-                    }
-
-                    db.Users.Remove(user);
-
-                    db.SaveChanges();
-                }
-                Console.WriteLine($"User {id} has now been deleted");
-                Thread.Sleep(1000);
-            }
-        }
-
         public static void testchanges()
         {
             using (var db = new MyDbContext())
@@ -386,7 +332,7 @@ namespace Mojo_Dojo_House.Helpers
             var i = 1;
             using (var db = new MyDbContext())
             {
-                foreach (var name in db.Category)
+                foreach (var name in db.Category.Where(c => !c.IsDeleted).Skip(1).Take(5))
                 {
                     string category = i + ". " + name.Name;
                     Categories.Add(category);
@@ -422,18 +368,41 @@ namespace Mojo_Dojo_House.Helpers
             using (var db = new MyDbContext())
             {
                 var category = new List<int>();
+                var categories = db.Category
+                                   .Where(c => c.Id != null && !c.IsDeleted && c.Name != "Uncategorised")
+                                   .OrderBy(c => c.Id)
+                                   .ToList();
+
+                if (i - 1 < categories.Count)
+                {
+                    int Number = categories[i - 1].Id;
+                    return Number;
+                }
+                else
+                {
+                    return 0;
+                }
+
+            }
+        }
+
+        public static int GetCategoryIdAdmin(string categori)
+        {
+            using (var db = new MyDbContext())
+            {
+                var category = new List<string>();
                 var categories = from c in db.Category
-                                 where c.Id != null
+                                 where c.Name == categori
                                  orderby c.Id
                                  select c;
                 categories.ToList();
 
                 foreach (var c in categories)
                 {
-                    category.Add(c.Id);
+                    category.Add(c.Name);
                 }
 
-                int Number = category[i];
+                int Number = int.Parse(category[0]);
                 return Number;
             }
         }
@@ -450,15 +419,9 @@ namespace Mojo_Dojo_House.Helpers
             Console.WriteLine("country");
             string country = Console.ReadLine();
 
-            Console.WriteLine("zipcode");
-            string zipcode = Console.ReadLine();
+            Console.WriteLine("Postkod");
+            string postcode = Console.ReadLine();
 
-            using (var db = new MyDbContext())
-            {
-                var newAddress = new Address { City = city, Street = street, Country = country, Zipcode = zipcode };
-                db.Address.Add(newAddress);
-                db.SaveChanges();
-            }
             Console.WriteLine("firstname");
             string firstName = Console.ReadLine();
 
@@ -478,42 +441,118 @@ namespace Mojo_Dojo_House.Helpers
 
             using (var db = new MyDbContext())
             {
-                int adressId = 14;
-                var newPerson = new Person { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email, Age = age, AddressId = adressId };
+                
+                var newPerson = new Person { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email, Age = age, City = city, Country = country, Street = street, PostCode = postcode};
 
                 db.Person.Add(newPerson);
                 db.SaveChanges();
 
             }
+        }
 
-            Console.WriteLine("cardnumber");
-            string cardNumber = Console.ReadLine();
+        public static void AddProductInfo()
+        {
+            int categoryId = 0;
+            Console.WriteLine("Namn: ");
+            string name = Console.ReadLine();
 
+            Console.WriteLine("kategori: ");
+            CategoryUpdating();
+            string category = Console.ReadLine();
+            category = char.ToUpper(category[0]) + category[1..].ToLower();
 
+            if (category == "Lego")
+            {
+                categoryId=Helper.GetCategoryIdAdmin(category);
+            }
+            else if (category == "Drones")
+            {
+               categoryId=Helper.GetCategoryIdAdmin(category);
+            }
+            else if (category == "Nerf")
+            {
+                categoryId = Helper.GetCategoryIdAdmin(category);
+            }
+            else if (category == "Boardgames")
+            {
+                categoryId = Helper.GetCategoryIdAdmin(category);
+            }
+            else if (category == "Collection items")
+            {
+                categoryId = Helper.GetCategoryIdAdmin(category);
+            }
+            else
+            {
+                Console.WriteLine("Error: produktens kommer liga i okategoriserad");
 
+                categoryId = Helper.GetCategoryId(0);
+            }
+            Console.WriteLine("Information om produkten: ");
+            string description = Console.ReadLine();
+
+            Console.WriteLine("Priset: ");
+            double price = double.Parse(Console.ReadLine());
+
+            Console.WriteLine("Produkter i lager: ");
+            int inventoryBalance = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Rekommendera produkten?(true or false): ");
+            string input = Console.ReadLine();
+            bool recommended;
+            bool result = bool.TryParse(input, out recommended);
+
+            if (result)
+            {
+                Console.WriteLine("du har nu valt: " + recommended);
+            }
+            else
+            {
+                Console.WriteLine("du skrev något fel, det kommer vara ej rekommenderad");
+                recommended = false;
+            }
+
+            Console.WriteLine("Vem är tillverkaren: ");
+            string supplier = Console.ReadLine();
             using (var db = new MyDbContext())
             {
-                int personId = 11;
-                var newCard = new Card { CardNumber = cardNumber, PersonId = personId };
-                db.Card.Add(newCard);
+                var newProduct = new Product { Name = name, CategoryId = categoryId, Description = description, Price = price, InventoryBalance = inventoryBalance, Recommended = recommended, IsDeleted = false, Supplier = supplier };
+                db.Product.Add(newProduct);
                 db.SaveChanges();
             }
-            Console.WriteLine("UserName");
-            string userName = Console.ReadLine();
+        }
+        public static void AddCategoryInfo()
+        {
+            Console.WriteLine("Namn: ");
+            string name = Console.ReadLine();
 
-            Console.WriteLine("password");
-            string passWord = Console.ReadLine();
+            Console.WriteLine("Information of kategorin: ");
+            string Description = Console.ReadLine();
 
-
-            
             using (var db = new MyDbContext())
             {
-                int personId = 11;
-                int cardId = 11;
-                var newUser = new User { Username = userName, Password = passWord, PersonId = personId, CardId = cardId };
-
-                db.Users.Add(newUser);
-                db.SaveChanges();
+                var newcategory = new Category { Name = name, Description = Description, IsDeleted = false };
+            }
+        }
+        public static void AdminAddSelect(int locationinfo)
+        {
+            if (locationinfo == 1)
+            {
+                Console.WriteLine("error: " + locationinfo);
+                AddProductInfo();
+            }
+            else if (locationinfo == 2)
+            {
+                Console.WriteLine("error: " + locationinfo);
+                AddCategoryInfo();
+            }
+            else if (locationinfo == 3)
+            {
+                Console.WriteLine("error: " + locationinfo);
+                AddUserInfo();
+            }
+            else
+            {
+                Console.WriteLine("error: " + locationinfo);
             }
         }
     }

@@ -14,15 +14,18 @@ namespace Mojo_Dojo_House.Classes
             optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=Mojo_Dojo_House;Trusted_Connection = True; TrustServerCertificate = True; ");
 
         }
-        public DbSet<Address> Address { get; set; }
-        public DbSet<Card> Card { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OrderProduct>()
+                .HasKey(op => new { op.OrderId, op.ProductId });
+
+            base.OnModelCreating(modelBuilder);
+        }
         public DbSet<Category> Category { get; set; }
         public DbSet<Order> Order { get; set; }
-        public DbSet<OrderDetail> OrderDetail { get; set; }
         public DbSet<Person> Person { get; set; }
         public DbSet<Product> Product { get; set; }
-        public DbSet<Supplier> Suppliers { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<OrderProduct> OrderProduct { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set;}
     }
 }

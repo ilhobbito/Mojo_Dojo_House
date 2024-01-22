@@ -9,10 +9,8 @@ namespace Mojo_Dojo_House
     {
         static void Main(string[] args)
         {
-            //var inputData = new InputData();
-            //inputData.DataInfo1();
+            //var inputData = new InputData(); ;
             //inputData.DataInfo2();
-            //inputData.DataInfo3();
             //inputData.DataInfo4();
             //inputData.DataInfo5();
             Draw.DrawStartMenu();
@@ -26,47 +24,42 @@ namespace Mojo_Dojo_House
                 switch (key.KeyChar)
                 {
                     case '1':
-                        Helper.GetCategory(0);
-                        locationInfo = Helper.GetCategoryId(0);
-                        Draw.DrawCategories(locationInfo);
-                        break;
-                    case '2':
-                        Helper.GetCategory(1);
                         locationInfo = Helper.GetCategoryId(1);
                         Draw.DrawCategories(locationInfo);
                         break;
-                    case '3':
-                        Helper.GetCategory(2);
+                    case '2':
                         locationInfo = Helper.GetCategoryId(2);
                         Draw.DrawCategories(locationInfo);
                         break;
-                    case '4':
-                        Helper.GetCategory(3);
+                    case '3':
                         locationInfo = Helper.GetCategoryId(3);
                         Draw.DrawCategories(locationInfo);
                         break;
-                    case '5':
-                        Helper.GetCategory(4);
+                    case '4':
                         locationInfo = Helper.GetCategoryId(4);
                         Draw.DrawCategories(locationInfo);
                         break;
+                    case '5':
+                        locationInfo = Helper.GetCategoryId(5);
+                        Draw.DrawCategories(locationInfo);
+                        break;
                     case 'q':
-                        item = Helper.GetProductInfo(locationInfo, 1);
+                        item = Helper.GetProductInfo(locationInfo, 0);
                         itemId = Helper.GetItemId(item);
                         Draw.DrawProducts(itemId, item);
                         break;
                     case 'w':
-                        item = Helper.GetProductInfo(locationInfo, 2);
+                        item = Helper.GetProductInfo(locationInfo, 1);
                         itemId = Helper.GetItemId(item);
                         Draw.DrawProducts(itemId, item);
                         break;
                     case 'e':
-                        item = Helper.GetProductInfo(locationInfo, 3);
+                        item = Helper.GetProductInfo(locationInfo, 2);
                         itemId = Helper.GetItemId(item);
                         Draw.DrawProducts(itemId, item);
                         break;
                     case 'r':
-                        item = Helper.GetProductInfo(locationInfo, 4);
+                        item = Helper.GetProductInfo(locationInfo, 3);
                         itemId = Helper.GetItemId(item);
                         Draw.DrawProducts(itemId, item);
                         break;
