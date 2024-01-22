@@ -13,6 +13,8 @@ using Azure;
 using System.Diagnostics.Metrics;
 using System.IO;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Identity.Client;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Mojo_Dojo_House.Helpers
@@ -186,7 +188,6 @@ namespace Mojo_Dojo_House.Helpers
             int choice = itemId;
             using (var db = new MyDbContext())
             {
-                // Load products from the database
                 var products = db.Product.ToList();
 
 
@@ -202,7 +203,7 @@ namespace Mojo_Dojo_House.Helpers
                 }
                 else
                 {
-                    Console.WriteLine("Invalid choice");
+                    Console.WriteLine("Går ej");
                 }
             }
         }
@@ -373,9 +374,9 @@ namespace Mojo_Dojo_House.Helpers
                                    .OrderBy(c => c.Id)
                                    .ToList();
 
-                if (i - 1 < categories.Count)
+                if (i < categories.Count)
                 {
-                    int Number = categories[i - 1].Id;
+                    int Number = categories[i].Id;
                     return Number;
                 }
                 else
@@ -385,12 +386,69 @@ namespace Mojo_Dojo_House.Helpers
 
             }
         }
+        public static List<string> GetUnsortedItems()
+        {
+                using (var db = new MyDbContext())
+                {
+                    var category = new List<string>();
+                    var categories = db.Category
+                                       .Where(c => c.Id != null && c.Name == "Uncategorised")
+                                       .OrderBy(c => c.Id)
+                                       .ToList();
 
+                    foreach(var c in categories)
+                {
+                    category.Add($"{categories.Count}");
+                }
+                return category;
+                
+            }
+        }
+        public static int SetCategoryMiss()
+        {
+            var i = 0;
+            using (var db = new MyDbContext())
+            {
+                var category = new List<int>();
+                var categories = db.Category
+                                   .Where(c => c.Id != null)
+                                   .OrderBy(c => c.Id)
+                                   .ToList();
+
+                if (i < categories.Count)
+                {
+                    int Number = categories[0].Id;
+                    return Number;
+                }
+                else
+                {
+                    return 0;
+                }
+
+            }
+        }
+        public static List<string> GetOrderHistory()
+        {
+            var i = 0;
+            using (var db = new MyDbContext())
+            {
+                var orderHistory = new List<string>();
+                var orders = db.Order.Where(O => O.Id != null).OrderBy(O => O.Id).ToList();
+
+                foreach (var O in orders)
+                {
+
+                    var orderDetails = $"Person:{O.PersonId}, Total Price: {O.TotalPrice}, Current Date: {O.CurrentDate}";
+                    orderHistory.Add(orderDetails);
+                }
+                return orderHistory;
+            }
+        }
         public static int GetCategoryIdAdmin(string categori)
         {
             using (var db = new MyDbContext())
             {
-                var category = new List<string>();
+                var category = new List<int>();
                 var categories = from c in db.Category
                                  where c.Name == categori
                                  orderby c.Id
@@ -399,10 +457,10 @@ namespace Mojo_Dojo_House.Helpers
 
                 foreach (var c in categories)
                 {
-                    category.Add(c.Name);
+                    category.Add(c.Id);
                 }
 
-                int Number = int.Parse(category[0]);
+                int Number = category[0];
                 return Number;
             }
         }
@@ -485,7 +543,7 @@ namespace Mojo_Dojo_House.Helpers
             {
                 Console.WriteLine("Error: produktens kommer liga i okategoriserad");
 
-                categoryId = Helper.GetCategoryId(0);
+                categoryId = SetCategoryMiss();
             }
             Console.WriteLine("Information om produkten: ");
             string description = Console.ReadLine();
@@ -520,6 +578,7 @@ namespace Mojo_Dojo_House.Helpers
                 db.SaveChanges();
             }
         }
+
         public static void AddCategoryInfo()
         {
             Console.WriteLine("Namn: ");
@@ -531,6 +590,264 @@ namespace Mojo_Dojo_House.Helpers
             using (var db = new MyDbContext())
             {
                 var newcategory = new Category { Name = name, Description = Description, IsDeleted = false };
+                db.Category.Add(newcategory);
+                db.SaveChanges();
+            }
+        }
+
+        public static void ChangeProductInfo()
+        {
+            Console.WriteLine("Vilken produkt vill du ändra?(Id): ");
+            Draw.AdminProducts();
+            int productId = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Vad vill du ändra?: ");
+            Console.WriteLine("Name(string), CategoryId(int), Description(string), Price(double), Inventorybalance(int),Supplier(string), Recommended(bool), Isdeleted(bool)");
+            string RowInfo = Console.ReadLine();
+            RowInfo = char.ToUpper(RowInfo[0]) + RowInfo[1..].ToLower();
+
+            Console.WriteLine("Vad vill du ändra det till?: ");
+            string ChangeInfo = Console.ReadLine();
+
+            ChangeProduct(RowInfo, productId, ChangeInfo);
+
+
+        }
+        public static void ChangeProduct(string rowInfo, int id, string changeInfo)
+        {
+            using (var db = new MyDbContext())
+            {
+                var product = db.Product.FirstOrDefault(item  => item.Id == id);
+
+                if (rowInfo == "Name")
+                {
+                    product.Name = changeInfo;
+                }
+                else if (rowInfo == "Description")
+                {
+                    product.Description = changeInfo;
+                }
+                else if (rowInfo == "Supplier")
+                {
+                    product.Supplier = changeInfo;
+                }
+                else if (rowInfo == "Inventorybalance")
+                {
+                    product.InventoryBalance = int.Parse(changeInfo);
+                }
+                else if (rowInfo == "Categoryid")
+                {
+                    product.CategoryId = int.Parse(changeInfo);
+                }
+                else if (rowInfo == "Price")
+                {
+                    product.Price = double.Parse(changeInfo);
+                }
+                else if (rowInfo == "Isdeleted")
+                {
+                    product.IsDeleted = bool.Parse(changeInfo);
+                }
+                else if (rowInfo == "Recommended")
+                {
+                    product.Recommended = bool.Parse(changeInfo);
+                }
+                else
+                {
+                    Console.WriteLine("error error error");
+                }
+                db.SaveChanges();
+            }
+        }
+        public static void ChangeCategoryInfo()
+        {
+            Console.WriteLine("Vilken kategori vill du ändra?(Id): ");
+            Draw.AdminCategories();
+            int categoryId = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Vad vill du ändra?: ");
+            Console.WriteLine("Name(string), Description(string), Isdeleted(bool)");
+            string RowInfo = Console.ReadLine();
+            RowInfo = char.ToUpper(RowInfo[0]) + RowInfo[1..].ToLower();
+
+            Console.WriteLine("Vad vill du ändra det till?: ");
+            string ChangeInfo = Console.ReadLine();
+
+            Changecategory(RowInfo, categoryId, ChangeInfo);
+        }
+        public static void Changecategory(string rowInfo, int id, string changeInfo)
+        {
+            using (var db = new MyDbContext())
+            {
+                var Category = db.Category.FirstOrDefault(item => item.Id == id);
+
+                if (rowInfo == "Name")
+                {
+                    Category.Name = changeInfo;
+                }
+                else if (rowInfo == "Description")
+                {
+                    Category.Description = changeInfo;
+                }
+                else if (rowInfo == "Isdeleted")
+                {
+                    Category.IsDeleted = bool.Parse(changeInfo);
+                }
+                else
+                {
+                    Console.WriteLine("error error");
+                }
+                db.SaveChanges();
+            }
+        }
+
+        public static void ChangePersonInfo()
+        {
+            Console.WriteLine("Vilken Person vill du ändra?(Id): ");
+            Draw.AdminUsers();
+            int personId = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Vad vill du ändra?: ");
+            Console.WriteLine("FirstName(string), LastName(string), Phonenumber(string), Email(string), Age(int), city(string), Country(string), Street(string), PostCode(int)");
+            string RowInfo = Console.ReadLine();
+            RowInfo = char.ToUpper(RowInfo[0]) + RowInfo[1..].ToLower();
+
+            Console.WriteLine("Vad vill du ändra det till?: ");
+            string ChangeInfo = Console.ReadLine();
+
+            ChangePerson(RowInfo, personId, ChangeInfo);
+        }
+
+        public static void ChangePerson(string rowInfo, int id, string changeInfo)
+        {
+            using (var db = new MyDbContext())
+            {
+                var person = db.Person.FirstOrDefault(item => item.Id == id);
+
+                if (rowInfo == "Firstname")
+                {
+                    person.FirstName = changeInfo;
+                }
+                else if (rowInfo == "Lastname")
+                {
+                    person.LastName = changeInfo;
+                }
+                else if (rowInfo == "Phonenumber")
+                {
+                    person.PhoneNumber = changeInfo;
+                }
+                else if (rowInfo == "Email")
+                {
+                    person.Email = changeInfo;
+                }
+                else if (rowInfo == "Age")
+                {
+                    person.Age = int.Parse(changeInfo);
+                }
+                else if (rowInfo == "City")
+                {
+                    person.City = changeInfo;
+                }
+                else if (rowInfo == "Street")
+                {
+                    person.Street = changeInfo;
+                }
+                else if (rowInfo == "Isdelete")
+                {
+                    person.IsDeleted = bool.Parse(changeInfo);
+                }
+                else if (rowInfo == "Postcode")
+                {
+                    person.PostCode = changeInfo;
+                }
+                else
+                {
+                    Console.WriteLine("error");
+                }
+                db.SaveChanges();
+            }
+        }
+
+        public static void DeleteProductInfo()
+        {
+            Console.WriteLine("Vilken produkt vill du ta bort?(id): ");
+            Draw.AdminProducts();
+            int id = int.Parse(Console.ReadLine());
+
+            Console.WriteLine($"Nu är Id: {id} borttagen");
+
+            DeleteProduct(id);
+
+        }
+        public static void DeleteProduct(int id)
+        {
+            using (var db = new MyDbContext())
+            {
+                int i = 0;
+                var product = db.Product.FirstOrDefault(item => item.Id == id);
+                if (product != null)
+                {
+                    product.IsDeleted = true;
+                }
+                else
+                {
+                }
+                db.SaveChanges();
+            }
+        }
+        public static void DeleteCategoryInfo()
+        {
+            Console.WriteLine("Vilken kategori vill du ta bort?(id): ");
+            Draw.AdminCategories();
+            int id = int.Parse(Console.ReadLine());
+
+            Console.WriteLine($"Nu är Id: {id} borttagen");
+
+            DeleteCategory(id);
+
+        }
+        public static void DeleteCategory(int id)
+        {
+            using (var db = new MyDbContext())
+            {
+                int i = 0;
+                var Category = db.Category.FirstOrDefault(item => item.Id == id);
+                if(Category != null)
+                {
+                    Category.IsDeleted = true;
+                }
+                else
+                {
+
+                }
+                db.SaveChanges();
+
+            }
+        }
+        public static void DeletePersonInfo()
+        {
+            Console.WriteLine("Vilken Person vill du ta bort?(id): ");
+            Draw.AdminUsers();
+            int id = int.Parse(Console.ReadLine());
+
+            Console.WriteLine($"Nu är Id: {id} borttagen");
+
+            DeletePerson(id);
+
+        }
+        public static void DeletePerson(int id)
+        {
+            using (var db = new MyDbContext())
+            {
+                int i = 0;
+                var Person = db.Person.FirstOrDefault(item => item.Id == id);
+                if (Person != null)
+                {
+                    Person.IsDeleted = true;
+                }
+                else
+                {
+                }
+                db.SaveChanges();
             }
         }
         public static void AdminAddSelect(int locationinfo)
@@ -549,6 +866,52 @@ namespace Mojo_Dojo_House.Helpers
             {
                 Console.WriteLine("error: " + locationinfo);
                 AddUserInfo();
+            }
+            else
+            {
+                Console.WriteLine("error: " + locationinfo);
+            }
+        }
+
+        public static void AdminChangeSelect(int locationinfo)
+        {
+            if (locationinfo == 1)
+            {
+                Console.WriteLine("error: " + locationinfo);
+                ChangeProductInfo();
+            }
+            else if (locationinfo == 2)
+            {
+                Console.WriteLine("error: " + locationinfo);
+                ChangeCategoryInfo();
+            }
+            else if (locationinfo == 3)
+            {
+                Console.WriteLine("error: " + locationinfo);
+                ChangePersonInfo();
+            }
+            else
+            {
+                Console.WriteLine("error: " + locationinfo);
+            }
+        }
+
+        public static void AdminDeleteSelect(int  locationinfo)
+        {
+            if (locationinfo == 1)
+            {
+                Console.WriteLine("error: " + locationinfo);
+                DeleteProductInfo();
+            }
+            else if (locationinfo == 2)
+            {
+                Console.WriteLine("error: " + locationinfo);
+                DeleteCategoryInfo();
+            }
+            else if (locationinfo == 3)
+            {
+                Console.WriteLine("error: " + locationinfo);
+                DeletePersonInfo();
             }
             else
             {

@@ -144,24 +144,40 @@ namespace Mojo_Dojo_House.Helpers
 
         public static void AdminProducts()
         {
+            var products = Helper.GetProductsAdmin();
+            var windowTop = new Classes.Window("", 50, 10, products);
+            windowTop.Draw();
+
             AdminBanner();
             WelcomeSign();
             LoginSettnings.LoginBox();
         }
         public static void AdminCategories()
         {
+            var category = Helper.GetCategoriesAdmin();
+            var windowTop = new Classes.Window("", 50, 10, category);
+            windowTop.Draw();
+            var unsorted = Helper.GetUnsortedItems();
+            var windowTop2 = new Classes.Window("Num of unsorted products", 10, 10, unsorted);
+            windowTop2.Draw();
             AdminBanner();
             WelcomeSign();
             LoginSettnings.LoginBox();
         }
         public static void AdminUsers()
         {
+            var user = Helper.GetUserAdmin();
+            var windowTop = new Classes.Window("", 50, 10, user);
+            windowTop.Draw();
             AdminBanner();
             WelcomeSign();
             LoginSettnings.LoginBox();
-        }
+        }   
         public static void AdminOrderInfo()
         {
+            var OrderHistory = Helper.GetOrderHistory();
+            var windowTop = new Classes.Window("", 50, 10, OrderHistory);
+            windowTop.Draw();
             AdminBanner();
             WelcomeSign();
             LoginSettnings.LoginBox();

@@ -18,6 +18,7 @@ namespace Mojo_Dojo_House.Classes
         public string? Country { get; set; }
         public string? Street {  get; set; }
         public string? PostCode { get; set; }
+        public bool? IsDeleted { get; set; }
         public ICollection<Order> Orders { get; set; }
     }
 }

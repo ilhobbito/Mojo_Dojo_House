@@ -24,23 +24,23 @@ namespace Mojo_Dojo_House
                 switch (key.KeyChar)
                 {
                     case '1':
-                        locationInfo = Helper.GetCategoryId(1);
+                        locationInfo = Helper.GetCategoryId(0);
                         Draw.DrawCategories(locationInfo);
                         break;
                     case '2':
-                        locationInfo = Helper.GetCategoryId(2);
+                        locationInfo = Helper.GetCategoryId(1);
                         Draw.DrawCategories(locationInfo);
                         break;
                     case '3':
-                        locationInfo = Helper.GetCategoryId(3);
+                        locationInfo = Helper.GetCategoryId(2);
                         Draw.DrawCategories(locationInfo);
                         break;
                     case '4':
-                        locationInfo = Helper.GetCategoryId(4);
+                        locationInfo = Helper.GetCategoryId(3);
                         Draw.DrawCategories(locationInfo);
                         break;
                     case '5':
-                        locationInfo = Helper.GetCategoryId(5);
+                        locationInfo = Helper.GetCategoryId(4);
                         Draw.DrawCategories(locationInfo);
                         break;
                     case 'q':
@@ -72,7 +72,6 @@ namespace Mojo_Dojo_House
                         Draw.DrawVaruKorg();
                         break;
                     case 'a':
-
                         //ändra antal produkter
                         break;
                     case 'd':

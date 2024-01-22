@@ -60,7 +60,6 @@ namespace Mojo_Dojo_House.Helpers
 
             if (isLoggedIn == true)
             {
-                //fixa så när man loggar in så står det att man är inloggad
                 List<string> LogIn = new List<string> { LoginSettnings.Username };
                 var windowLogIn = new Classes.Window("", 2, 1, LogIn);
                 windowLogIn.Left = 70;

@@ -14,11 +14,12 @@ namespace Mojo_Dojo_House.Helpers
         {
             bool admin = true;
             int LocationInfo = 0;
+            Console.Clear();
+            Draw.AdminPage();
             while (admin)
             {
-                Console.Clear();
-                Draw.AdminPage();
                 var key = Console.ReadKey();
+                Console.Clear();
                 switch (key.KeyChar)
                 {
                     case '1':
@@ -28,7 +29,7 @@ namespace Mojo_Dojo_House.Helpers
                     case '2':
                         Draw.AdminCategories();
                         LocationInfo = 2;
-                        //vissa hur många okategoriserad produkter som finns (med ett tal)
+                        //visa hur många okategoriserad produkter som finns (med ett tal)
                         break;
                     case '3':
                         Draw.AdminUsers();
@@ -44,12 +45,15 @@ namespace Mojo_Dojo_House.Helpers
                         Draw.DrawLogIn();
                         break;
                     case 'd':
-                        //delete
+                        Draw.AdminPage();
+                        Helper.AdminDeleteSelect(LocationInfo);
                         break;
                     case 's':
-                        //change
+                        Draw.AdminPage();
+                        Helper.AdminChangeSelect(LocationInfo);
                         break;
                     case 'a':
+                        Draw.AdminPage();
                         Helper.AdminAddSelect(LocationInfo);
                         break;
                 }
