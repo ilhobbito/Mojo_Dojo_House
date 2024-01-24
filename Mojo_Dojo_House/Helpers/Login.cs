@@ -17,7 +17,7 @@ namespace Mojo_Dojo_House.Helpers
             
             if (logIn == false)
             {
-                Console.WriteLine("Please enter username");
+                Console.WriteLine("Skriv in ditt användarnamn");
                 username = Console.ReadLine();
                 logIn = true;
                 if (username == "admin")
@@ -47,7 +47,7 @@ namespace Mojo_Dojo_House.Helpers
             }
             else
             {
-                List<string> LogIn = new List<string> { "L: Login" };
+                List<string> LogIn = new List<string> { "L: Logga in" };
                 var windowLogIn = new Classes.Window("", 2, 1, LogIn);
                 windowLogIn.Left = 70;
                 windowLogIn.Draw();

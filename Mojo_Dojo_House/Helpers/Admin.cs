@@ -38,6 +38,9 @@ namespace Mojo_Dojo_House.Helpers
                         Draw.AdminOrderInfo();
                         LocationInfo = 4;
                         break;
+                    case '5':
+                        Draw.DrawQuieries();
+                        break;
                     case 'l':
                         Login.LoginAttempt();
                         admin = false;

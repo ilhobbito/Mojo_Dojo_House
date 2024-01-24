@@ -9,10 +9,18 @@ namespace Mojo_Dojo_House
     {
         static void Main(string[] args)
         {
-            //var inputData = new InputData(); ;
+            //Databas inmatning
+            //först: update-database
+            //Ta bort kommentarena på inputdata första gången den körs och sen kommentera ut för att inte få upprepad data
+
+            //var inputData = new InputData();
             //inputData.DataInfo2();
             //inputData.DataInfo4();
             //inputData.DataInfo5();
+
+
+            int j = 1; //så man trackar hur många köp i den session
+            int newPerson = 1;
             Draw.DrawStartMenu();
             int locationInfo = 0;
             char keypress;
@@ -73,6 +81,8 @@ namespace Mojo_Dojo_House
                         double price = Helper.GetItemPrice(itemId);
                         Helper.addProductShoppingCart(price, itemId);
                         Draw.DrawProducts(itemId, item, stringPrice);
+                        Console.WriteLine($"En produkt har köpts {j}");
+                        j++;
                         break;
                     case 'v':
                         Draw.DrawVaruKorg();
@@ -105,22 +115,24 @@ namespace Mojo_Dojo_House
                         Draw.DrawPayment(keypress);
                         break;
                     case 'h':
-                        Helper.SaveShoppingCartToOrder();
+                        Helper.SaveShoppingCartToOrder(newPerson);
                         Helper.DeleteCart();
                         Console.WriteLine("Nu har du betalat!");
                         break;
                     case 'j':
-                        Helper.SaveShoppingCartToOrder();
-                        Helper.DeleteCart();
-                        Console.WriteLine("Nu har du betalat!");
-                        break;
-                    case 'k':
-                        Helper.SaveShoppingCartToOrder();
+                        Helper.SaveShoppingCartToOrder(newPerson);
                         Helper.DeleteCart();
                         Console.WriteLine("Nu har du betalat!");
                         break;
                     case 'f':
+                        newPerson = Helper.AddUserInfo();
+                        Console.Clear();
                         Draw.Delivery();
+                        break;
+                    case 'k':
+                        Helper.SaveShoppingCartToOrder(newPerson);
+                        Helper.DeleteCart();
+                        Console.WriteLine("Nu har du betalat!");
                         break;
                     case 'l':
                         Draw.DrawLogIn();

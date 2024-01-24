@@ -34,6 +34,65 @@ namespace Mojo_Dojo_House.Helpers
                 return Product;
             }
         }
+        public static void CallQueries()
+        {
+            Console.WriteLine("Välj mellan 1-3");
+            Console.WriteLine("1: Produkter sorterade efter leverantör");
+            Console.WriteLine("2: Sortera efter bästsäljande");
+            Console.WriteLine("3: Presenter under 100kr");
+            var key1 = Console.ReadKey();
+            Console.Clear();
+            switch (key1.KeyChar)
+            {
+                case '1':
+                    using (var db = new MyDbContext())
+                    {
+                        var sortSupplier = db.Product.OrderBy(p => p.Supplier).ToList();
+                        Console.WriteLine("Produkter sorterade efter leverantör: ");
+                        foreach (var product in sortSupplier)
+                        {
+                            Console.WriteLine($"ProduktId: {product.Id}, Namn: {product.Name}, Supplier: {product.Supplier}");
+                        }
+                    }
+                    Thread.Sleep(100);
+                    break;
+                case '2':
+                    using (var db = new MyDbContext())
+                    {
+
+                        var orderHistory = new List<string>();
+                        var ordersProduct = db.OrderProduct;
+                        var products = db.Product;
+
+                        var bestSeller = (from o in ordersProduct
+                                          join p in products on o.ProductId equals p.Id
+                                          select new
+                                          {
+                                              p.Name,
+                                              o.Quantity
+                                          }).OrderByDescending(o => o.Quantity);
+
+                        Console.WriteLine("Bästsäljande produkter");
+                        foreach (var O in bestSeller)
+                        {
+                            Console.WriteLine($"Namn: {O.Name}           Sålda produkter: {O.Quantity}");
+                        }
+                    }
+                    break;
+                case '3':
+                    using (var db = new MyDbContext())
+                    {
+                        var cheapPresents = db.Product.Where(p => p.Price < 100).ToList();
+
+                        foreach (var present in cheapPresents)
+                        {
+                            Console.WriteLine(present.Name);
+                        }
+                    }
+                    Draw.AdminUsers();
+                    break;
+            }
+        }
 
         public static string GetProductInfo(int categoryID, int Keypress)
         {
@@ -116,7 +175,16 @@ namespace Mojo_Dojo_House.Helpers
                 {
                     Product.Add("Id: " + product.Id + " Namn: " + product.Product.Name + " Antal: " + product.Quantity + " Pris:" + product.TotalPrice);
                 }
-                return Product;
+
+                if (Product .Count > 0)
+                {
+                    return Product;
+                }
+                else
+                {
+                    Product.Add("Tom varukorg");
+                    return Product;
+                }
             }
         }
         public static int GetItemId(string productName)
@@ -171,7 +239,7 @@ namespace Mojo_Dojo_House.Helpers
                 return totalPrice;
             }
         }
-        public static void SaveShoppingCartToOrder()
+        public static void SaveShoppingCartToOrder(int personId)
         {
             using ( var db = new MyDbContext())
             {
@@ -184,7 +252,7 @@ namespace Mojo_Dojo_House.Helpers
                 }
                 var order1 = new Order
                 {
-                    PersonId = 1,
+                    PersonId = personId,
                     CurrentDate = DateTime.Now,
                     OrderProducts = orderProducts
                 };
@@ -275,6 +343,15 @@ namespace Mojo_Dojo_House.Helpers
                     Recommend.Add(r.Name);
 
                 }
+
+                if (Recommend .Count > 0)
+                {
+
+                }
+                else
+                {
+                    Recommend.Add("Finns inga rekommenderade produkter");
+                }
                 return Recommend;
             }
 
@@ -322,23 +399,6 @@ namespace Mojo_Dojo_House.Helpers
             }
             return Users;
         }
-
-        public static void DeleteProductInfo(int id)
-        {
-            using (var db = new MyDbContext())
-            {
-                var product = db.Product.FirstOrDefault(p => p.Id == id);
-
-                if (product != null)
-                {
-                    db.Product.Remove(product);
-                    db.SaveChanges();
-                }
-                Console.WriteLine($"Product {id} has been deleted");
-                Thread.Sleep(1000);
-            }
-        }
-
         public static void DeleteCart()
         {
             using (var db = new MyDbContext())
@@ -354,46 +414,6 @@ namespace Mojo_Dojo_House.Helpers
             }
         }
 
-        public static void DeleteCategoryInfo(int id)
-        {
-            using (var db = new MyDbContext())
-            {
-                var category = db.Category.FirstOrDefault(p => p.Id == id);
-
-                if (category != null)
-                {
-                    db.Category.Remove(category);
-                    db.SaveChanges();
-                }
-                Console.WriteLine($"Product {id} has been deleted");
-                Thread.Sleep(1000);
-            }
-        }
-        public static void testchanges()
-        {
-            using (var db = new MyDbContext())
-            {
-                Console.WriteLine("Ange namn på personen du vill ändra info om: ");
-
-                var inputName = int.Parse(Console.ReadLine());
-
-                var makeChanges = (from p in db.Person
-                                   where p.Id == inputName
-                                   select p).SingleOrDefault();
-
-
-
-                if (makeChanges != null)
-                {
-                    Console.WriteLine("Ange nytt telefonnummer: ");
-                    string answer = Console.ReadLine();
-
-                    makeChanges.PhoneNumber = answer;
-                }
-                 
-                db.SaveChanges();
-            }
-        }
         public static List<string> CategoryUpdating()
         {
             var Categories = new List<string>();
@@ -492,12 +512,22 @@ namespace Mojo_Dojo_House.Helpers
             using (var db = new MyDbContext())
             {
                 var orderHistory = new List<string>();
-                var orders = db.Order.Where(O => O.Id != null).OrderBy(O => O.Id).ToList();
+                var orders = db.Order;
+                var person = db.Person;
 
-                foreach (var O in orders)
+                var returnValue = (from o in orders
+                                   join p in person on o.PersonId equals p.Id
+                                   select new
+                                   {
+                                       p.FirstName,
+                                       p.LastName,
+                                       o.TotalPrice,
+                                       o.CurrentDate
+                                   }); ;
+                foreach (var O in returnValue)
                 {
 
-                    var orderDetails = $"Person:{O.PersonId}, Total Price: {O.TotalPrice}, Current Date: {O.CurrentDate}";
+                    var orderDetails = $"Person:{O.FirstName} {O.LastName}, Priset: {O.TotalPrice}, Datum: {O.CurrentDate}";
                     orderHistory.Add(orderDetails);
                 }
                 return orderHistory;
@@ -524,34 +554,34 @@ namespace Mojo_Dojo_House.Helpers
             }
         }
 
-        public static void AddUserInfo()
+        public static int AddUserInfo()
         {
 
-            Console.WriteLine("Stad");
+            Console.WriteLine("Stad: ");
             string city = Console.ReadLine();
                              
-            Console.WriteLine("Gata");
+            Console.WriteLine("Gata: ");
             string street = Console.ReadLine();
 
-            Console.WriteLine("Land");
+            Console.WriteLine("Land: ");
             string country = Console.ReadLine();
 
-            Console.WriteLine("Postkod");
+            Console.WriteLine("Postkod: ");
             string postcode = Console.ReadLine();
 
-            Console.WriteLine("Förnamn");
+            Console.WriteLine("Förnamn: ");
             string firstName = Console.ReadLine();
 
-            Console.WriteLine("Efternamn");
+            Console.WriteLine("Efternamn: ");
             string lastName = Console.ReadLine();
 
-            Console.WriteLine("Telefonnummer");
+            Console.WriteLine("Telefonnummer: ");
             string phoneNumber = Console.ReadLine();
 
-            Console.WriteLine("Email");
+            Console.WriteLine("Email: ");
             string email = Console.ReadLine();
 
-            Console.WriteLine("age");
+            Console.WriteLine("Age: ");
             int age = int.Parse(Console.ReadLine());
 
 
@@ -564,6 +594,7 @@ namespace Mojo_Dojo_House.Helpers
                 db.Person.Add(newPerson);
                 db.SaveChanges();
 
+                return newPerson.Id;
             }
         }
 
@@ -573,7 +604,7 @@ namespace Mojo_Dojo_House.Helpers
             Console.WriteLine("Namn: ");
             string name = Console.ReadLine();
 
-            Console.WriteLine("kategori: ");
+            Console.WriteLine("ategori: ");
             CategoryUpdating();
             string category = Console.ReadLine();
             category = char.ToUpper(category[0]) + category[1..].ToLower();
@@ -600,7 +631,7 @@ namespace Mojo_Dojo_House.Helpers
             }
             else
             {
-                Console.WriteLine("Error: produktens kommer liga i okategoriserad");
+                Console.WriteLine("Error: produkten kommer ligga i okategoriserad");
 
                 categoryId = SetCategoryMiss();
             }
@@ -620,11 +651,11 @@ namespace Mojo_Dojo_House.Helpers
 
             if (result)
             {
-                Console.WriteLine("du har nu valt: " + recommended);
+                Console.WriteLine("Du har nu valt: " + recommended);
             }
             else
             {
-                Console.WriteLine("du skrev något fel, det kommer vara ej rekommenderad");
+                Console.WriteLine("Du skrev något fel eller false");
                 recommended = false;
             }
 
@@ -643,7 +674,7 @@ namespace Mojo_Dojo_House.Helpers
             Console.WriteLine("Namn: ");
             string name = Console.ReadLine();
 
-            Console.WriteLine("Information of kategorin: ");
+            Console.WriteLine("Information om kategorin: ");
             string Description = Console.ReadLine();
 
             using (var db = new MyDbContext())
@@ -782,15 +813,15 @@ namespace Mojo_Dojo_House.Helpers
             {
                 var person = db.Person.FirstOrDefault(item => item.Id == id);
 
-                if (rowInfo == "Firstname")
+                if (rowInfo == "Förnamn")
                 {
                     person.FirstName = changeInfo;
                 }
-                else if (rowInfo == "Lastname")
+                else if (rowInfo == "Efternamn")
                 {
                     person.LastName = changeInfo;
                 }
-                else if (rowInfo == "Phonenumber")
+                else if (rowInfo == "Telefonnummer")
                 {
                     person.PhoneNumber = changeInfo;
                 }
@@ -798,23 +829,23 @@ namespace Mojo_Dojo_House.Helpers
                 {
                     person.Email = changeInfo;
                 }
-                else if (rowInfo == "Age")
+                else if (rowInfo == "Ålder")
                 {
                     person.Age = int.Parse(changeInfo);
                 }
-                else if (rowInfo == "City")
+                else if (rowInfo == "Stad")
                 {
                     person.City = changeInfo;
                 }
-                else if (rowInfo == "Street")
+                else if (rowInfo == "Gata")
                 {
                     person.Street = changeInfo;
                 }
-                else if (rowInfo == "Isdelete")
+                else if (rowInfo == "Borttagen")
                 {
                     person.IsDeleted = bool.Parse(changeInfo);
                 }
-                else if (rowInfo == "Postcode")
+                else if (rowInfo == "Postnummer")
                 {
                     person.PostCode = changeInfo;
                 }
@@ -913,17 +944,17 @@ namespace Mojo_Dojo_House.Helpers
         {
             if (locationinfo == 1)
             {
-                Console.WriteLine("error: " + locationinfo);
+                Console.WriteLine("Du har nu börjat lägga till en produkt: ");
                 AddProductInfo();
             }
             else if (locationinfo == 2)
             {
-                Console.WriteLine("error: " + locationinfo);
+                Console.WriteLine("Du har nu börjat lägga till en kategori: ");
                 AddCategoryInfo();
             }
             else if (locationinfo == 3)
             {
-                Console.WriteLine("error: " + locationinfo);
+                Console.WriteLine("Du har nu börjat lägga till en användare: ");
                 AddUserInfo();
             }
             else
@@ -936,17 +967,17 @@ namespace Mojo_Dojo_House.Helpers
         {
             if (locationinfo == 1)
             {
-                Console.WriteLine("error: " + locationinfo);
+                Console.WriteLine("Du har nu börjat ändra en produkt: ");
                 ChangeProductInfo();
             }
             else if (locationinfo == 2)
             {
-                Console.WriteLine("error: " + locationinfo);
+                Console.WriteLine("Du har nu börjat ändra en kategori: ");
                 ChangeCategoryInfo();
             }
             else if (locationinfo == 3)
             {
-                Console.WriteLine("error: " + locationinfo);
+                Console.WriteLine("Du har nu börjat ändra en användare: ");
                 ChangePersonInfo();
             }
             else
@@ -959,22 +990,22 @@ namespace Mojo_Dojo_House.Helpers
         {
             if (locationinfo == 1)
             {
-                Console.WriteLine("error: " + locationinfo);
+                Console.WriteLine("Du har nu börjat ta bort en produkt: ");
                 DeleteProductInfo();
             }
             else if (locationinfo == 2)
             {
-                Console.WriteLine("error: " + locationinfo);
+                Console.WriteLine("Du har nu börjat ta bort en kategori: ");
                 DeleteCategoryInfo();
             }
             else if (locationinfo == 3)
             {
-                Console.WriteLine("error: " + locationinfo);
+                Console.WriteLine("Du har nu börjat ta bort en användare: ");
                 DeletePersonInfo();
             }
             else
             {
-                Console.WriteLine("error: " + locationinfo);
+                Console.WriteLine("error: " + locationinfo + "finns ej");
             }
         }
     }

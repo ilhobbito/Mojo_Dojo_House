@@ -36,65 +36,65 @@ namespace Mojo_Dojo_House.DataInput
                 myDb.AddRange(category,category1, category2, category3, category4, category5);
                 myDb.SaveChanges();
 
-                var product1 = new Product { Name = "Lego spaceship", CategoryId = 2, Description = "A Lego Spaceship", Price = 199.99, InventoryBalance = 3, Recommended = false, IsDeleted = false };
+                var product1 = new Product { Name = "Lego spaceship", CategoryId = 2, Supplier = "Lego", Description = "A Lego Spaceship", Price = 199.99, InventoryBalance = 3, Recommended = false, IsDeleted = false };
 
-                var product2 = new Product { Name = "Lego Castle Set", CategoryId = 2, Description = "An intricate Lego set featuring a medieval castle with detailed interiors. Ideal for creative building.", Price = 249.99, InventoryBalance = 5, Recommended = false, IsDeleted = false };
+                var product2 = new Product { Name = "Lego Castle Set", CategoryId = 2, Supplier = "Lego", Description = "An intricate Lego set featuring a medieval castle with detailed interiors. Ideal for creative building.", Price = 249.99, InventoryBalance = 5, Recommended = false, IsDeleted = false };
 
-                var product3 = new Product { Name = "Racing Drone", CategoryId = 3, Description = "A high-speed drone designed for competitive racing. Features advanced aerodynamics and controls.", Price = 299.99, InventoryBalance = 4, Recommended = false, IsDeleted = false };
+                var product3 = new Product { Name = "Racing Drone", CategoryId = 3, Supplier = "Drone Maker", Description = "A high-speed drone designed for competitive racing. Features advanced aerodynamics and controls.", Price = 299.99, InventoryBalance = 4, Recommended = false, IsDeleted = false };
 
-                var product4 = new Product { Name = "Nerf Elite Blaster", CategoryId = 4, Description = "A popular Nerf blaster with high accuracy and range. Perfect for action-packed games.", Price = 29.99, InventoryBalance = 10, Recommended = false, IsDeleted = false };
+                var product4 = new Product { Name = "Nerf Elite Blaster", CategoryId = 4, Supplier = "Nerf AB", Description = "A popular Nerf blaster with high accuracy and range. Perfect for action-packed games.", Price = 29.99, InventoryBalance = 10, Recommended = false, IsDeleted = false };
 
-                var product5 = new Product { Name = "Strategy Board Game", CategoryId = 5, Description = "A challenging board game that tests strategic thinking and planning. Suitable for ages 12 and up.", Price = 49.99, InventoryBalance = 7, Recommended = true, IsDeleted = false };
+                var product5 = new Product { Name = "Strategy Board Game", CategoryId = 5, Supplier = "Games association", Description = "A challenging board game that tests strategic thinking and planning. Suitable for ages 12 and up.", Price = 49.99, InventoryBalance = 7, Recommended = true, IsDeleted = false };
 
-                var product6 = new Product { Name = "Superhero Action Figure", CategoryId = 6, Description = "A detailed action figure of a popular superhero. A must-have for collectors.", Price = 19.99, InventoryBalance = 15, Recommended = false, IsDeleted = false };
+                var product6 = new Product { Name = "Superhero Action Figure", CategoryId = 6, Supplier = "Amazon", Description = "A detailed action figure of a popular superhero. A must-have for collectors.", Price = 19.99, InventoryBalance = 15, Recommended = false, IsDeleted = false };
 
-                var product7 = new Product { Name = "Lego Space Station", CategoryId = 2, Description = "A complex Lego set that lets you build a detailed space station. Encourages imaginative play.", Price = 299.99, InventoryBalance = 2, Recommended = false, IsDeleted = false };
+                var product7 = new Product { Name = "Lego Space Station", CategoryId = 2, Supplier = "Lego", Description = "A complex Lego set that lets you build a detailed space station. Encourages imaginative play.", Price = 299.99, InventoryBalance = 2, Recommended = false, IsDeleted = false };
 
-                var product8 = new Product { Name = "Photography Drone", CategoryId = 3, Description = "A drone equipped with a high-resolution camera, perfect for aerial photography enthusiasts.", Price = 499.99, InventoryBalance = 3, Recommended = false, IsDeleted = false };
+                var product8 = new Product { Name = "Photography Drone", CategoryId = 3, Supplier = "Drone Maker", Description = "A drone equipped with a high-resolution camera, perfect for aerial photography enthusiasts.", Price = 499.99, InventoryBalance = 3, Recommended = false, IsDeleted = false };
 
-                var product9 = new Product { Name = "Nerf Mega Blaster", CategoryId = 4, Description = "This Nerf blaster fires mega darts for ultimate battle fun. Ideal for outdoor play.", Price = 34.99, InventoryBalance = 8, Recommended = false, IsDeleted = false };
+                var product9 = new Product { Name = "Nerf Mega Blaster", CategoryId = 4, Supplier = "Nerf AB", Description = "This Nerf blaster fires mega darts for ultimate battle fun. Ideal for outdoor play.", Price = 34.99, InventoryBalance = 8, Recommended = false, IsDeleted = false };
 
-                var product10 = new Product { Name = "Fantasy Adventure Board Game", CategoryId = 5, Description = "Dive into a fantasy world with this engaging board game. Great for family game nights.", Price = 59.99, InventoryBalance = 6, Recommended = false, IsDeleted = false };
+                var product10 = new Product { Name = "Fantasy Adventure Board Game", CategoryId = 5, Supplier = "Games association", Description = "Dive into a fantasy world with this engaging board game. Great for family game nights.", Price = 59.99, InventoryBalance = 6, Recommended = false, IsDeleted = false };
 
-                var product11 = new Product { Name = "Collector's Edition Movie Mug", CategoryId = 6, Description = "A beautifully crafted mug featuring iconic movie imagery. Perfect for collectors and fans.", Price = 14.99, InventoryBalance = 20, Recommended = false, IsDeleted = false };
+                var product11 = new Product { Name = "Collector's Edition Movie Mug", CategoryId = 6, Supplier = "Amazon", Description = "A beautifully crafted mug featuring iconic movie imagery. Perfect for collectors and fans.", Price = 14.99, InventoryBalance = 20, Recommended = false, IsDeleted = false };
 
-                var product12 = new Product { Name = "Lego Pirate Ship", CategoryId = 2, Description = "Build a classic pirate ship with this Lego set. Filled with details and fun.", Price = 159.99, InventoryBalance = 4, Recommended = false, IsDeleted = false };
+                var product12 = new Product { Name = "Lego Pirate Ship", CategoryId = 2, Supplier = "Lego", Description = "Build a classic pirate ship with this Lego set. Filled with details and fun.", Price = 159.99, InventoryBalance = 4, Recommended = false, IsDeleted = false };
 
-                var product13 = new Product { Name = "Mini Drone", CategoryId = 3, Description = "A compact and agile drone, perfect for indoor flying and beginners.", Price = 49.99, InventoryBalance = 10, Recommended = false, IsDeleted = false };
+                var product13 = new Product { Name = "Mini Drone", CategoryId = 3, Supplier = "Drone Maker", Description = "A compact and agile drone, perfect for indoor flying and beginners.", Price = 49.99, InventoryBalance = 10, Recommended = false, IsDeleted = false };
 
-                var product14 = new Product { Name = "Nerf Zombie Strike", CategoryId = 4, Description = "Survive the zombie apocalypse with this Nerf Zombie Strike blaster.", Price = 39.99, InventoryBalance = 12, Recommended = false, IsDeleted = false };
+                var product14 = new Product { Name = "Nerf Zombie Strike", CategoryId = 4, Supplier = "Nerf AB", Description = "Survive the zombie apocalypse with this Nerf Zombie Strike blaster.", Price = 39.99, InventoryBalance = 12, Recommended = false, IsDeleted = false };
 
-                var product15 = new Product { Name = "Classic Chess Set", CategoryId = 5, Description = "A traditional chess set with wooden pieces. Timeless and educational.", Price = 29.99, InventoryBalance = 9, Recommended = false, IsDeleted = false };
+                var product15 = new Product { Name = "Classic Chess Set", CategoryId = 5, Supplier = "Games association", Description = "A traditional chess set with wooden pieces. Timeless and educational.", Price = 29.99, InventoryBalance = 9, Recommended = false, IsDeleted = false };
 
-                var product16 = new Product { Name = "Animated Series Soft Toy", CategoryId = 6, Description = "A soft and cuddly toy from a beloved animated series. Perfect for kids and nostalgic adults.", Price = 24.99, InventoryBalance = 15, Recommended = false, IsDeleted = false };
+                var product16 = new Product { Name = "Animated Series Soft Toy", CategoryId = 6, Supplier = "Amazon", Description = "A soft and cuddly toy from a beloved animated series. Perfect for kids and nostalgic adults.", Price = 24.99, InventoryBalance = 15, Recommended = false, IsDeleted = false };
 
-                var product17 = new Product { Name = "Lego Robotics Kit", CategoryId = 2, Description = "An advanced Lego set for building and programming robots. Educational and fun for tech enthusiasts.", Price = 349.99, InventoryBalance = 3, Recommended = true, IsDeleted = false };
+                var product17 = new Product { Name = "Lego Robotics Kit", CategoryId = 2, Supplier = "Lego", Description = "An advanced Lego set for building and programming robots. Educational and fun for tech enthusiasts.", Price = 349.99, InventoryBalance = 3, Recommended = true, IsDeleted = false };
 
-                var product18 = new Product { Name = "Surveillance Drone", CategoryId = 3, Description = "A state-of-the-art drone designed for surveillance with advanced camera capabilities.", Price = 599.99, InventoryBalance = 2, Recommended = false, IsDeleted = false };
+                var product18 = new Product { Name = "Surveillance Drone", CategoryId = 3, Supplier = "Drone Maker", Description = "A state-of-the-art drone designed for surveillance with advanced camera capabilities.", Price = 599.99, InventoryBalance = 2, Recommended = false, IsDeleted = false };
 
-                var product19 = new Product { Name = "Nerf Super Soaker", CategoryId = 4, Description = "Beat the heat with this powerful Nerf Super Soaker. Ideal for summer fun.", Price = 19.99, InventoryBalance = 20, Recommended = false, IsDeleted = false };
+                var product19 = new Product { Name = "Nerf Super Soaker", CategoryId = 4, Supplier = "Nerf AB", Description = "Beat the heat with this powerful Nerf Super Soaker. Ideal for summer fun.", Price = 19.99, InventoryBalance = 20, Recommended = false, IsDeleted = false };
 
-                var product20 = new Product { Name = "Family Trivia Game", CategoryId = 5, Description = "A fun and educational trivia game for the whole family. Covers a wide range of topics.", Price = 39.99, InventoryBalance = 8, Recommended = false, IsDeleted = false };
+                var product20 = new Product { Name = "Family Trivia Game", CategoryId = 5, Supplier = "Games association", Description = "A fun and educational trivia game for the whole family. Covers a wide range of topics.", Price = 39.99, InventoryBalance = 8, Recommended = false, IsDeleted = false };
 
-                var product21 = new Product { Name = "Vintage Comic Book", CategoryId = 6, Description = "A rare vintage comic book, a prized item for serious collectors and enthusiasts.", Price = 99.99, InventoryBalance = 5, Recommended = false, IsDeleted = false };
+                var product21 = new Product { Name = "Vintage Comic Book", CategoryId = 6, Supplier = "Amazon", Description = "A rare vintage comic book, a prized item for serious collectors and enthusiasts.", Price = 99.99, InventoryBalance = 5, Recommended = false, IsDeleted = false };
 
-                var product22 = new Product { Name = "Lego City Set", CategoryId = 2, Description = "Create your own urban landscape with this detailed Lego City set.", Price = 199.99, InventoryBalance = 6, Recommended = false, IsDeleted = false };
+                var product22 = new Product { Name = "Lego City Set", CategoryId = 2, Supplier = "Lego", Description = "Create your own urban landscape with this detailed Lego City set.", Price = 199.99, InventoryBalance = 6, Recommended = false, IsDeleted = false };
 
-                var product23 = new Product { Name = "Explorer Drone", CategoryId = 3, Description = "An all-terrain drone designed for exploration and adventure in various environments.", Price = 399.99, InventoryBalance = 4, Recommended = false };
+                var product23 = new Product { Name = "Explorer Drone", CategoryId = 3, Supplier = "Drone Maker", Description = "An all-terrain drone designed for exploration and adventure in various environments.", Price = 399.99, InventoryBalance = 4, Recommended = false, IsDeleted = false };
 
-                var product24 = new Product { Name = "Nerf Laser Ops", CategoryId = 4, Description = "Experience futuristic battles with Nerf Laser Ops. High-tech and action-packed.", Price = 49.99, InventoryBalance = 7, Recommended = false, IsDeleted = false };
+                var product24 = new Product { Name = "Nerf Laser Ops", CategoryId = 4, Supplier = "Nerf AB", Description = "Experience futuristic battles with Nerf Laser Ops. High-tech and action-packed.", Price = 49.99, InventoryBalance = 7, Recommended = false, IsDeleted = false };
 
-                var product25 = new Product { Name = "Mystery Detective Game", CategoryId = 5, Description = "Solve intriguing mysteries with this detective-themed board game. Great for critical thinking.", Price = 44.99, InventoryBalance = 6, Recommended = false, IsDeleted = false };
+                var product25 = new Product { Name = "Mystery Detective Game", CategoryId = 5, Supplier = "Games association", Description = "Solve intriguing mysteries with this detective-themed board game. Great for critical thinking.", Price = 44.99, InventoryBalance = 6, Recommended = false, IsDeleted = false };
 
-                var product26 = new Product { Name = "Sci-Fi Movie Poster", CategoryId = 6, Description = "A high-quality poster of a classic sci-fi movie. A must-have for film buffs and collectors.", Price = 29.99, InventoryBalance = 10, Recommended = false, IsDeleted = false };
+                var product26 = new Product { Name = "Sci-Fi Movie Poster", CategoryId = 6, Supplier = "Amazon", Description = "A high-quality poster of a classic sci-fi movie. A must-have for film buffs and collectors.", Price = 29.99, InventoryBalance = 10, Recommended = false, IsDeleted = false };
 
-                var product27 = new Product { Name = "Lego Superhero Set", CategoryId = 2, Description = "Build your favorite superhero scenes with this exciting Lego set.", Price = 159.99, InventoryBalance = 5, Recommended = false, IsDeleted = false };
+                var product27 = new Product { Name = "Lego Superhero Set", CategoryId = 2, Supplier = "Lego", Description = "Build your favorite superhero scenes with this exciting Lego set.", Price = 159.99, InventoryBalance = 5, Recommended = false, IsDeleted = false };
 
-                var product28 = new Product { Name = "Aerial Photography Drone", CategoryId = 3, Description = "Capture stunning aerial shots with this specialized photography drone.", Price = 549.99, InventoryBalance = 3, Recommended = false, IsDeleted = false };
+                var product28 = new Product { Name = "Aerial Photography Drone", CategoryId = 3, Supplier = "Drone Maker", Description = "Capture stunning aerial shots with this specialized photography drone.", Price = 549.99, InventoryBalance = 3, Recommended = false, IsDeleted = false };
 
-                var product29 = new Product { Name = "Nerf Rival Precision", CategoryId = 4, Description = "A high-precision Nerf blaster for competitive Nerf battles.", Price = 59.99, InventoryBalance = 9, Recommended = true, IsDeleted = false };
+                var product29 = new Product { Name = "Nerf Rival Precision", CategoryId = 4, Supplier = "Nerf AB", Description = "A high-precision Nerf blaster for competitive Nerf battles.", Price = 59.99, InventoryBalance = 9, Recommended = true, IsDeleted = false };
 
-                var product30 = new Product { Name = "Role-Playing Game Kit", CategoryId = 5, Description = "Embark on epic adventures with this comprehensive role-playing game kit.", Price = 79.99, InventoryBalance = 4, Recommended = false, IsDeleted = false };
+                var product30 = new Product { Name = "Role-Playing Game Kit", CategoryId = 5, Supplier = "Games association", Description = "Embark on epic adventures with this comprehensive role-playing game kit.", Price = 79.99, InventoryBalance = 4, Recommended = false, IsDeleted = false};
 
                 myDb.AddRange(
                 product1, product2, product3, product4, product5,

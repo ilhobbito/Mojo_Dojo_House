@@ -152,7 +152,7 @@ namespace Mojo_Dojo_House.Helpers
             var windowTop3 = new Classes.Window("", 30, 10, topText3);
             windowTop3.Draw();
 
-            List<string> topText = new List<string> { "B: Buy Product" };
+            List<string> topText = new List<string> { "B: Köp produkt" };
             var windowTop = new Classes.Window("", 50, 10, topText);
             windowTop.Draw();
 
@@ -170,7 +170,6 @@ namespace Mojo_Dojo_House.Helpers
         {
             AdminBanner();
             WelcomeSign();
-            Login.LoginBox();
         }
 
         public static void AdminProducts()
@@ -181,7 +180,7 @@ namespace Mojo_Dojo_House.Helpers
 
             AdminBanner();
             WelcomeSign();
-            Login.LoginBox();
+
         }
         public static void Delivery()
         {
@@ -192,7 +191,6 @@ namespace Mojo_Dojo_House.Helpers
             WelcomeSign();
             Categories();
 
-            Login.LoginBox();
         }
         public static void AdminCategories()
         {
@@ -202,11 +200,10 @@ namespace Mojo_Dojo_House.Helpers
             var unsorted = Helper.GetUnsortedItems();
             var stringUnsorted = new List<string> {unsorted.ToString()};
 
-            var windowTop2 = new Classes.Window("Num of unsorted products", 10, 10, stringUnsorted);
+            var windowTop2 = new Classes.Window("Hur många osorterade produkter", 10, 10, stringUnsorted);
             windowTop2.Draw();
             AdminBanner();
             WelcomeSign();
-            Login.LoginBox();
         }
         public static void AdminUsers()
         {
@@ -215,7 +212,6 @@ namespace Mojo_Dojo_House.Helpers
             windowTop.Draw();
             AdminBanner();
             WelcomeSign();
-            Login.LoginBox();
         }   
         public static void AdminOrderInfo()
         {
@@ -224,17 +220,21 @@ namespace Mojo_Dojo_House.Helpers
             windowTop.Draw();
             AdminBanner();
             WelcomeSign();
-            Login.LoginBox();
         }
         public static void AdminBanner()
         {
-            List<string> topText2 = new List<string> { "1:Produkter  2:Kategorier  3:Kunder" };
+            List<string> topText2 = new List<string> { "1:Produkter  2:Kategorier  3:Kunder 4:BetalningsHistorik 5: Queries" };
             var windowTop2 = new Classes.Window("", 20, 1, topText2);
             windowTop2.Draw();
 
             WelcomeSign();
+        }
 
-            Login.LoginBox();
+        public static void DrawQuieries()
+        {
+            AdminBanner();
+            WelcomeSign();
+            Helper.CallQueries();  
         }
 
         public static void DrawChangeProductPage()
@@ -293,7 +293,8 @@ namespace Mojo_Dojo_House.Helpers
         }
         public static void ShoppingCart()
         {
-            var product = Helper.GetShoppingCart();
+            var product = new List<string> { };
+            product = Helper.GetShoppingCart();
             var productWindow = new Classes.Window($"Varukorg", 30, 4, product);
             productWindow.Draw();
         }
@@ -304,7 +305,7 @@ namespace Mojo_Dojo_House.Helpers
             List<string> NumOfProducts = new List<string>();
             var stringproduct = product.ToString();
             NumOfProducts.Add(stringproduct);
-            var productWindow = new Classes.Window($"V: Varukorg", 82, 1, NumOfProducts);
+            var productWindow = new Classes.Window($"V: Varukorg", 85, 1, NumOfProducts);
             productWindow.Draw();
         }
     }
