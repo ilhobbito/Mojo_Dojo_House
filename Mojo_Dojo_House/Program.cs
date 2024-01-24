@@ -12,6 +12,7 @@ namespace Mojo_Dojo_House
             //Databas inmatning
             //först: update-database
             //Ta bort kommentarena på inputdata första gången den körs och sen kommentera ut för att inte få upprepad data
+            //ifall data inte finns i databasen så crashar det
 
             //var inputData = new InputData();
             //inputData.DataInfo2();
