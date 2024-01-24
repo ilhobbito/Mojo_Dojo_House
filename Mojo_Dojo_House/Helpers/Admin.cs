@@ -29,7 +29,6 @@ namespace Mojo_Dojo_House.Helpers
                     case '2':
                         Draw.AdminCategories();
                         LocationInfo = 2;
-                        //visa hur många okategoriserad produkter som finns (med ett tal)
                         break;
                     case '3':
                         Draw.AdminUsers();
@@ -39,10 +38,9 @@ namespace Mojo_Dojo_House.Helpers
                         Draw.AdminOrderInfo();
                         LocationInfo = 4;
                         break;
-                    case 'L':
-                        LoginSettnings.Logout();
+                    case 'l':
+                        Login.LoginAttempt();
                         admin = false;
-                        Draw.DrawLogIn();
                         break;
                     case 'd':
                         Draw.AdminPage();

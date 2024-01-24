@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azure.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
@@ -7,60 +8,39 @@ using System.Threading.Tasks;
 
 namespace Mojo_Dojo_House.Helpers
 {
-    internal class Login
+    public class Login
     {
+        public static bool logIn = false;
+        public static string username = "";
         public static void LoginAttempt()
         {
-            if (LoginSettnings.IsUserLoggedIn == false)
+            
+            if (logIn == false)
             {
                 Console.WriteLine("Please enter username");
-                string username = Console.ReadLine();
-
-                Console.WriteLine("Please enter password");
-                string password = Console.ReadLine();
-                if (username == "admin" && password == "admin")
+                username = Console.ReadLine();
+                logIn = true;
+                if (username == "admin")
                 {
-                    LoginSettnings.Login(username);
                     Admin.AdminSite();
                 }
                 else
                 {
-                    LoginSettnings.Login(username);
                 }
             }
-
-            else if (LoginSettnings.IsUserLoggedIn == true)
+            else
             {
-                LoginSettnings.Logout();
+                logIn = false;
+                username = "";
             }
 
         }
-
-    }
-    public static class LoginSettnings
-    {
-        public static bool IsUserLoggedIn { get; private set; } = false;
-        public static string Username { get; private set; }
-
-        public static void Login(string name)
-        {
-            Username = name;
-            IsUserLoggedIn = true;
-        }
-
-        public static void Logout()
-        {
-            Username = null;
-            IsUserLoggedIn = false;
-        }
-
         public static void LoginBox()
         {
-            bool isLoggedIn = LoginSettnings.IsUserLoggedIn;
 
-            if (isLoggedIn == true)
+            if (logIn == true)
             {
-                List<string> LogIn = new List<string> { LoginSettnings.Username };
+                List<string> LogIn = new List<string> { username };
                 var windowLogIn = new Classes.Window("", 2, 1, LogIn);
                 windowLogIn.Left = 70;
                 windowLogIn.Draw();

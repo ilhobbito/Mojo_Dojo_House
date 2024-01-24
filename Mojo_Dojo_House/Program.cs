@@ -15,8 +15,10 @@ namespace Mojo_Dojo_House
             //inputData.DataInfo5();
             Draw.DrawStartMenu();
             int locationInfo = 0;
+            char keypress;
             string item = "";
             int itemId = 999;
+            string stringPrice = "";
             while (true)
             {
                 var key = Console.ReadKey();
@@ -45,40 +47,80 @@ namespace Mojo_Dojo_House
                         break;
                     case 'q':
                         item = Helper.GetProductInfo(locationInfo, 0);
+                        stringPrice = Helper.GetProductPrice(locationInfo, 0);
                         itemId = Helper.GetItemId(item);
-                        Draw.DrawProducts(itemId, item);
+                        Draw.DrawProducts(itemId, item, stringPrice);
                         break;
                     case 'w':
                         item = Helper.GetProductInfo(locationInfo, 1);
+                        stringPrice = Helper.GetProductPrice(locationInfo, 1);
                         itemId = Helper.GetItemId(item);
-                        Draw.DrawProducts(itemId, item);
+                        Draw.DrawProducts(itemId, item, stringPrice);
                         break;
                     case 'e':
                         item = Helper.GetProductInfo(locationInfo, 2);
+                        stringPrice = Helper.GetProductPrice(locationInfo, 2);
                         itemId = Helper.GetItemId(item);
-                        Draw.DrawProducts(itemId, item);
+                        Draw.DrawProducts(itemId, item, stringPrice);
                         break;
                     case 'r':
                         item = Helper.GetProductInfo(locationInfo, 3);
+                        stringPrice = Helper.GetProductPrice(locationInfo, 3);
                         itemId = Helper.GetItemId(item);
-                        Draw.DrawProducts(itemId, item);
+                        Draw.DrawProducts(itemId, item, stringPrice);
                         break;
                     case 'b':
                         double price = Helper.GetItemPrice(itemId);
                         Helper.addProductShoppingCart(price, itemId);
-                        Draw.DrawProducts(itemId, item);
+                        Draw.DrawProducts(itemId, item, stringPrice);
                         break;
                     case 'v':
                         Draw.DrawVaruKorg();
                         break;
                     case 'a':
-                        //ändra antal produkter
+                        Draw.DrawVaruKorg();
+                        Console.WriteLine("Vilken produkt vill du ändra?(Id): ");
+                        int productId = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Hur många vill du ändra till?");
+                        int quantity = int.Parse(Console.ReadLine());
+                        Helper.ChangeShoppingCartQuantity(productId, quantity);
+                        Console.Clear();
+                        Draw.DrawVaruKorg();
                         break;
                     case 'd':
-                        //ta bort en produkt/flera prdukter
+                        Draw.DrawVaruKorg();
+                        Console.WriteLine("Vilken produkt vill du ta bort?(Id): ");
+                        int productId1 = int.Parse(Console.ReadLine());
+
+                        Helper.DeleteShoppingCart(productId1);
+                        Console.Clear();
+                        Draw.DrawVaruKorg();
+                        break;
+                    case 'p':
+                        keypress = 'p';
+                        Draw.DrawPayment(keypress);
+                        break;
+                    case 'o':
+                        keypress = 'o';
+                        Draw.DrawPayment(keypress);
+                        break;
+                    case 'h':
+                        Helper.SaveShoppingCartToOrder();
+                        Helper.DeleteCart();
+                        Console.WriteLine("Nu har du betalat!");
+                        break;
+                    case 'j':
+                        Helper.SaveShoppingCartToOrder();
+                        Helper.DeleteCart();
+                        Console.WriteLine("Nu har du betalat!");
+                        break;
+                    case 'k':
+                        Helper.SaveShoppingCartToOrder();
+                        Helper.DeleteCart();
+                        Console.WriteLine("Nu har du betalat!");
                         break;
                     case 'f':
-                        //faktura
+                        Draw.Delivery();
                         break;
                     case 'l':
                         Draw.DrawLogIn();
@@ -88,8 +130,7 @@ namespace Mojo_Dojo_House
                         Draw.DrawStartMenu();
                         break;
                     case 's':
-                        //Helper.Desc();
-                        //Helper.Search();
+                        Helper.Search();
                         break;
                     default:
                         Draw.DrawStartMenu();

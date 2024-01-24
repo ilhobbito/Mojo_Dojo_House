@@ -53,6 +53,24 @@ namespace Mojo_Dojo_House.Helpers
             }
         }
 
+        public static string GetProductPrice(int categoryId, int keyPress)
+        {
+            int i = keyPress;
+            var Product = new List<string>();
+            using (var db = new MyDbContext())
+            {
+                var products = db.Product.Where(c => c.CategoryId == categoryId).ToList();
+                foreach (var product in products)
+                {
+                    Product.Add("" + product.Price);
+                }
+
+                string item = Product[i];
+
+                return item;
+            }
+        }
+
         public static int GetShoppingCartCount()
         {
             using (var db = new MyDbContext())
@@ -62,35 +80,43 @@ namespace Mojo_Dojo_House.Helpers
                 return Number;
             }
         }
-
-        public static List<string> GetShoppingCard()
+        public static void DeleteShoppingCart(int Id)
         {
-            var product = new List<int>();
-            var stringProduct = new List<string>();
-            var productQuantity = new List<int>();
-            var stringProductQuantity = new List<string>();
-            var i = 0;
             using (var db = new MyDbContext())
             {
-                var products = db.ShoppingCarts.ToList();
-                foreach(var Product in products)
-                {
-                    product.Add(Product.productId);
-                    var productId = product[i];
-                    var productName = db.Product.Where(c => c.Id == productId).ToList();
-                    
-                    foreach(var productNames in productName)
-                    {
-                        stringProduct.Add(productNames.Name);
+                var shoppingCart = db.ShoppingCarts.FirstOrDefault(s => s.Id == Id);
 
-                    }
-                    i++;
-                    foreach(var Product1 in products)
-                    {
-                        productQuantity.Add(Product1.Quantity);
-                    }
+                db.ShoppingCarts.Remove(shoppingCart);
+
+                db.SaveChanges();
+            }
+        }
+
+        public static void ChangeShoppingCartQuantity(int Id, int quantity)
+        {
+            using (var db = new MyDbContext())
+            {
+                var shoppingCart = db.ShoppingCarts.FirstOrDefault(s => s.Id == Id);
+                
+                shoppingCart.Quantity = quantity;
+
+                db.SaveChanges();
+            }
+        }
+
+        public static List<string> GetShoppingCart()
+        {
+            var Product = new List<string>();
+            using (var db = new MyDbContext())
+            {
+                  var ShoppingCart = db.ShoppingCarts.Include(s => s.Product).Where(s => s.Id != null).ToList();
+
+
+                  foreach (var product in ShoppingCart)
+                {
+                    Product.Add("Id: " + product.Id + " Namn: " + product.Product.Name + " Antal: " + product.Quantity + " Pris:" + product.TotalPrice);
                 }
-                return stringProduct;
+                return Product;
             }
         }
         public static int GetItemId(string productName)
@@ -143,6 +169,30 @@ namespace Mojo_Dojo_House.Helpers
                     i++;
                 }
                 return totalPrice;
+            }
+        }
+        public static void SaveShoppingCartToOrder()
+        {
+            using ( var db = new MyDbContext())
+            {
+                var products = new List<int>();
+                var shoppingcart = db.ShoppingCarts.Where(s => s.Id != null).ToList();
+                var orderProducts = new List<OrderProduct>();
+                foreach ( var item in shoppingcart)
+                {
+                    orderProducts.Add(new OrderProduct { ProductId = item.productId, Quantity = item.Quantity });
+                }
+                var order1 = new Order
+                {
+                    PersonId = 1,
+                    CurrentDate = DateTime.Now,
+                    OrderProducts = orderProducts
+                };
+                order1.TotalPrice = (from op in order1.OrderProducts
+                                     join p in db.Product on op.ProductId equals p.Id
+                                     select op.Quantity * p.Price).Sum();
+                db.Order.Add(order1);
+                db.SaveChanges();
             }
         }
 
@@ -284,6 +334,23 @@ namespace Mojo_Dojo_House.Helpers
                     db.Product.Remove(product);
                     db.SaveChanges();
                 }
+                Console.WriteLine($"Product {id} has been deleted");
+                Thread.Sleep(1000);
+            }
+        }
+
+        public static void DeleteCart()
+        {
+            using (var db = new MyDbContext())
+            {
+
+                var product = db.ShoppingCarts.Where(s => s.Id != null);
+
+                foreach (var item in product)
+                {
+                    db.ShoppingCarts.Remove(item);
+                }
+                db.SaveChanges();
             }
         }
 
@@ -386,24 +453,16 @@ namespace Mojo_Dojo_House.Helpers
 
             }
         }
-        public static List<string> GetUnsortedItems()
+        public static int GetUnsortedItems()
         {
                 using (var db = new MyDbContext())
                 {
-                    var category = new List<string>();
-                    var categories = db.Category
-                                       .Where(c => c.Id != null && c.Name == "Uncategorised")
-                                       .OrderBy(c => c.Id)
-                                       .ToList();
-
-                    foreach(var c in categories)
-                {
-                    category.Add($"{categories.Count}");
-                }
-                return category;
-                
+                var unsortedProductCount = db.Product.Count(p => p.CategoryId == 1 && p.Category.Name == "Uncategorised");
+                return unsortedProductCount;
             }
         }
+
+
         public static int SetCategoryMiss()
         {
             var i = 0;
@@ -468,28 +527,28 @@ namespace Mojo_Dojo_House.Helpers
         public static void AddUserInfo()
         {
 
-            Console.WriteLine("city");
+            Console.WriteLine("Stad");
             string city = Console.ReadLine();
                              
-            Console.WriteLine("street");
+            Console.WriteLine("Gata");
             string street = Console.ReadLine();
 
-            Console.WriteLine("country");
+            Console.WriteLine("Land");
             string country = Console.ReadLine();
 
             Console.WriteLine("Postkod");
             string postcode = Console.ReadLine();
 
-            Console.WriteLine("firstname");
+            Console.WriteLine("Förnamn");
             string firstName = Console.ReadLine();
 
-            Console.WriteLine("Last name");
+            Console.WriteLine("Efternamn");
             string lastName = Console.ReadLine();
 
-            Console.WriteLine("phonenumber");
+            Console.WriteLine("Telefonnummer");
             string phoneNumber = Console.ReadLine();
 
-            Console.WriteLine("email");
+            Console.WriteLine("Email");
             string email = Console.ReadLine();
 
             Console.WriteLine("age");

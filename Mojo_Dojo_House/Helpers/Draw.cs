@@ -23,7 +23,7 @@ namespace Mojo_Dojo_House.Helpers
 
             Categories();
 
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
         }
 
         public static void DrawVaruKorg()
@@ -35,24 +35,57 @@ namespace Mojo_Dojo_House.Helpers
             double TotalPrice = Helper.CalculateShoppingCart();
             var totalPrice = new List<string>();
 
-            totalPrice.Add(TotalPrice.ToString());
+            
+            string formateratPris = TotalPrice.ToString("0.00 kr");
+            totalPrice.Add(formateratPris);
 
-            var Price = new Classes.Window("TotalPris: ", 40, 15, totalPrice);
+            var Price = new Classes.Window("Totalpris: ", 40, 15, totalPrice);
+            Price.Draw();
+            List<string> cardsText = new List<string> {"F: För att välja leverans", "A: För att ändra antal varor", "D: för att ta bort en vara"};
+            var faktura = new Classes.Window("", 2, 15, cardsText);
+            faktura.Draw();
+            WelcomeSign();
+                
+            Categories();
+
+            Login.LoginBox();
+        } 
+        public static void DrawPayment(char key)
+        {
+            int deliveryCost = 0;
+            if (key == 'p')
+            {
+                deliveryCost = 39;
+            }    
+            else if (key == 'o')
+            {
+                deliveryCost = 49;
+            }
+            else
+            {
+
+            }
+
+            ShoppingCart();
+
+            double TotalPrice = Helper.CalculateShoppingCart();
+            TotalPrice = TotalPrice * 1.25 + deliveryCost;
+            var totalPrice = new List<string>();
+
+            string formateratPris = TotalPrice.ToString("0.00 kr");
+            totalPrice.Add(formateratPris);
+            var Price = new Classes.Window("Totalpris: ", 40, 15, totalPrice);
             Price.Draw();
 
-            //List<string> frakt = new List<string> { "Välj fraktsätt med: Ombud eller Postnord, tryck O för Ombud, P för Postnord " };
-            //var shippingInfo = new Classes.Window("Ombud: ", 25, 6, frakt);
-            //shippingInfo.Draw();
-
-            //List<string> Betala = new List<string> { "Vad vill du betala med", "Bankkort", "Swish", "Klarna" };
-            //var BetalaWindow = new Classes.Window("betala", 30, 9, Betala);
-            //BetalaWindow.Draw();
+            List<string> Betala = new List<string> { "Vad vill du betala med", "H: Bankkort", "J: Swish", "K: Klarna" };
+            var BetalaWindow = new Classes.Window("Betala", 60, 9, Betala);
+            BetalaWindow.Draw();
 
             WelcomeSign();
 
             Categories();
 
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
         }
         public static void DrawCard(string card)
         {
@@ -69,19 +102,13 @@ namespace Mojo_Dojo_House.Helpers
 
             Categories();
 
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
         }
         public static void DrawLogIn()
         {
-            List<string> LoginInfo = new List<string> { "" };
-            var Login = new Classes.Window("Ange dina inloggningsuppgifter", 2, 6, LoginInfo);
-            Login.Draw();
-
             WelcomeSign();
 
-            Categories();
-
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
         }
         public static void DrawShipping(string shipping)
         {
@@ -109,23 +136,27 @@ namespace Mojo_Dojo_House.Helpers
 
             Categories();
 
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
         }
-        public static void DrawProducts(int productId, string item)
+        public static void DrawProducts(int productId, string item, string Price)
         {
-            int product = productId;
-            string toy = item;
+
             List<string> topText2 = new List<string> { };
-            topText2.Add(toy);
+            topText2.Add(item);
 
             var windowTop2 = new Classes.Window("", 20, 1, topText2);
             windowTop2.Draw();
+
+            List<string> topText3 = new List<string> { };
+            topText3.Add(Price);
+            var windowTop3 = new Classes.Window("", 30, 10, topText3);
+            windowTop3.Draw();
 
             List<string> topText = new List<string> { "B: Buy Product" };
             var windowTop = new Classes.Window("", 50, 10, topText);
             windowTop.Draw();
 
-            Helper.Desc(product);
+            Helper.Desc(productId);
 
             ShowShoppingCart();
 
@@ -133,13 +164,13 @@ namespace Mojo_Dojo_House.Helpers
 
             Categories();
 
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
         }
         public static void AdminPage()
         {
             AdminBanner();
             WelcomeSign();
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
         }
 
         public static void AdminProducts()
@@ -150,7 +181,18 @@ namespace Mojo_Dojo_House.Helpers
 
             AdminBanner();
             WelcomeSign();
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
+        }
+        public static void Delivery()
+        {
+            List<string> topText2 = new List<string> { "Postnord 39kr: P", "Early bird 49: O"};
+            var window = new Classes.Window($"", 33, 5, topText2);
+            window.Draw();
+
+            WelcomeSign();
+            Categories();
+
+            Login.LoginBox();
         }
         public static void AdminCategories()
         {
@@ -158,11 +200,13 @@ namespace Mojo_Dojo_House.Helpers
             var windowTop = new Classes.Window("", 50, 10, category);
             windowTop.Draw();
             var unsorted = Helper.GetUnsortedItems();
-            var windowTop2 = new Classes.Window("Num of unsorted products", 10, 10, unsorted);
+            var stringUnsorted = new List<string> {unsorted.ToString()};
+
+            var windowTop2 = new Classes.Window("Num of unsorted products", 10, 10, stringUnsorted);
             windowTop2.Draw();
             AdminBanner();
             WelcomeSign();
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
         }
         public static void AdminUsers()
         {
@@ -171,7 +215,7 @@ namespace Mojo_Dojo_House.Helpers
             windowTop.Draw();
             AdminBanner();
             WelcomeSign();
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
         }   
         public static void AdminOrderInfo()
         {
@@ -180,7 +224,7 @@ namespace Mojo_Dojo_House.Helpers
             windowTop.Draw();
             AdminBanner();
             WelcomeSign();
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
         }
         public static void AdminBanner()
         {
@@ -190,7 +234,7 @@ namespace Mojo_Dojo_House.Helpers
 
             WelcomeSign();
 
-            LoginSettnings.LoginBox();
+            Login.LoginBox();
         }
 
         public static void DrawChangeProductPage()
@@ -225,7 +269,7 @@ namespace Mojo_Dojo_House.Helpers
         {
             var topText2 = Helper.CategoryUpdating();
 
-            var windowTop2 = new Classes.Window("", 2, 6, topText2);
+            var windowTop2 = new Classes.Window("S: Söka", 2, 6, topText2);
             windowTop2.Draw();
         }
 
@@ -249,17 +293,18 @@ namespace Mojo_Dojo_House.Helpers
         }
         public static void ShoppingCart()
         {
-            var product = Helper.GetShoppingCard();
+            var product = Helper.GetShoppingCart();
             var productWindow = new Classes.Window($"Varukorg", 30, 4, product);
             productWindow.Draw();
         }
+
         public static void ShowShoppingCart()
         {
             var product = Helper.GetShoppingCartCount();
             List<string> NumOfProducts = new List<string>();
             var stringproduct = product.ToString();
             NumOfProducts.Add(stringproduct);
-            var productWindow = new Classes.Window($"Varukorg", 82, 1, NumOfProducts);
+            var productWindow = new Classes.Window($"V: Varukorg", 82, 1, NumOfProducts);
             productWindow.Draw();
         }
     }
