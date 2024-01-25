@@ -178,6 +178,10 @@ namespace Mojo_Dojo_House.Helpers
             var windowTop = new Classes.Window("", 50, 10, products);
             windowTop.Draw();
 
+            List<string> topText3 = new List<string> { "A: lägg till en ny produkt", "S: Ändra en produkt", "D: Ta bort en produkt" };
+            var windowTop3 = new Classes.Window("", 10, 15, topText3);
+            windowTop3.Draw();
+
             AdminBanner();
             WelcomeSign();
 
@@ -204,12 +208,19 @@ namespace Mojo_Dojo_House.Helpers
             windowTop2.Draw();
             AdminBanner();
             WelcomeSign();
+
+            List<string> topText3 = new List<string> { "A: lägg till en ny kategori", "S: Ändra en kategori", "D: Ta bort en kategori"};
+            var windowTop3 = new Classes.Window("", 10, 15, topText3);
+            windowTop3.Draw();
         }
         public static void AdminUsers()
         {
             var user = Helper.GetUserAdmin();
             var windowTop = new Classes.Window("", 50, 10, user);
             windowTop.Draw();
+            List<string> topText3 = new List<string> { "A: lägg till en ny användare", "S: Ändra en användare", "D: Ta bort en användare" };
+            var windowTop3 = new Classes.Window("", 10, 15, topText3);
+            windowTop3.Draw();
             AdminBanner();
             WelcomeSign();
         }   

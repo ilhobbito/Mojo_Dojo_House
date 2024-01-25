@@ -32,7 +32,7 @@ namespace Mojo_Dojo_House
             {
                 var key = Console.ReadKey();
                 Console.Clear();
-                switch (key.KeyChar)
+                switch (char.ToLower(key.KeyChar))
                 {
                     case '1':
                         locationInfo = Helper.GetCategoryId(0);
