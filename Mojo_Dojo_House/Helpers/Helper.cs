@@ -89,7 +89,6 @@ namespace Mojo_Dojo_House.Helpers
                             Console.WriteLine(present.Name);
                         }
                     }
-                    Draw.AdminUsers();
                     break;
             }
         }

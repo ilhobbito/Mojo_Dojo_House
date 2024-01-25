@@ -57,6 +57,9 @@ namespace Mojo_Dojo_House.Helpers
                         Draw.AdminPage();
                         Helper.AdminAddSelect(LocationInfo);
                         break;
+                    default:
+                        Draw.AdminPage();
+                        break;
                 }
             }
         }
