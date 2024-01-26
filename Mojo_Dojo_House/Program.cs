@@ -1,7 +1,6 @@
 ﻿using Mojo_Dojo_House.Helpers;
 using Mojo_Dojo_House.DataInput;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Azure.Core;
+
 
 namespace Mojo_Dojo_House
 {
@@ -18,6 +17,8 @@ namespace Mojo_Dojo_House
             //inputData.DataInfo2();
             //inputData.DataInfo4();
             //inputData.DataInfo5();
+
+
 
 
             int j = 1; //så man trackar hur många köp i den session
@@ -82,7 +83,7 @@ namespace Mojo_Dojo_House
                         double price = Helper.GetItemPrice(itemId);
                         Helper.addProductShoppingCart(price, itemId);
                         Draw.DrawProducts(itemId, item, stringPrice);
-                        Console.WriteLine($"En produkt har köpts {j}");
+                        Console.WriteLine($"En produkt har lagts till i varukorgen {j}");
                         j++;
                         break;
                     case 'v':

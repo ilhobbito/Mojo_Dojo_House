@@ -39,7 +39,7 @@ namespace Mojo_Dojo_House.Helpers
             string formateratPris = TotalPrice.ToString("0.00 kr");
             totalPrice.Add(formateratPris);
 
-            var Price = new Classes.Window("Totalpris: ", 40, 15, totalPrice);
+            var Price = new Classes.Window("Totalpris utan moms: ", 40, 15, totalPrice);
             Price.Draw();
             List<string> cardsText = new List<string> {"F: För att välja leverans", "A: För att ändra antal varor", "D: för att ta bort en vara"};
             var faktura = new Classes.Window("", 2, 15, cardsText);
@@ -74,7 +74,7 @@ namespace Mojo_Dojo_House.Helpers
 
             string formateratPris = TotalPrice.ToString("0.00 kr");
             totalPrice.Add(formateratPris);
-            var Price = new Classes.Window("Totalpris: ", 40, 15, totalPrice);
+            var Price = new Classes.Window("Totalpris med moms: ", 40, 15, totalPrice);
             Price.Draw();
 
             List<string> Betala = new List<string> { "Vad vill du betala med", "H: Bankkort", "J: Swish", "K: Klarna" };
@@ -126,6 +126,8 @@ namespace Mojo_Dojo_House.Helpers
             var productWindow = new Classes.Window($"kategori:", 40, 5, products);
             productWindow.Draw();
 
+
+            //fick problem att lägga knapparna i samma namn som produkterna
             List<string> topText2 = new List<string> { "Q:", "W:", "E:", "R" };
             var window = new Classes.Window($"", 33, 5, topText2);
             window.Draw();

@@ -603,7 +603,7 @@ namespace Mojo_Dojo_House.Helpers
             Console.WriteLine("Namn: ");
             string name = Console.ReadLine();
 
-            Console.WriteLine("ategori: ");
+            Console.WriteLine("Kategori: ");
             CategoryUpdating();
             string category = Console.ReadLine();
             category = char.ToUpper(category[0]) + category[1..].ToLower();
@@ -796,7 +796,7 @@ namespace Mojo_Dojo_House.Helpers
             int personId = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Vad vill du ändra?: ");
-            Console.WriteLine("FirstName(string), LastName(string), Phonenumber(string), Email(string), Age(int), city(string), Country(string), Street(string), PostCode(int)");
+            Console.WriteLine("Förnamn(string), Efternamn(string), Telefonnummer(string), Email(string), Ålder(int), Stad(string), Gata(string), Borttagen(bool), PostNummer(string)");
             string RowInfo = Console.ReadLine();
             RowInfo = char.ToUpper(RowInfo[0]) + RowInfo[1..].ToLower();
 
